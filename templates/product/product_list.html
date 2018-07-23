@@ -1,0 +1,39 @@
+{% extends 'master_template.html' %}
+{%  block body_block  %}
+{% load staticfiles %}
+<div class="col-lg-8">
+
+    <div class="card">
+        <div class="card-title">
+            <h4>Products</h4>
+            <br/>
+            <br/>
+        </div>
+        <div class="row table">
+            {% for list in product %}
+            <div  class="col-md-4">
+                <a href="{% url 'editproduct' list.id  %}" ><p><img class="dashboard-avatar" alt=""
+                                                                      src="{%  static 'assets/img/product.png' %}" align="bottom"><br/><br/><br/>
+
+                    <strong>{{ list.name|title}} <br></strong>
+                    {{list.type}}</strong> <br>
+                    {{list.tag}}<br/>
+
+                </p></a>
+
+            </div>
+
+
+            {% endfor %}
+        </div>
+
+    </div>
+</div>
+</div>
+<!-- /# column -->
+<div class="col-lg-4">
+
+</div>
+<!-- /# column -->
+</div>
+{% endblock %}

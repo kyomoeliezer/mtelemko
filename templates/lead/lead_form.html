@@ -1,0 +1,123 @@
+{% extends 'master_template.html' %}
+{%  block body_block  %}
+<div class="col-lg-8">
+
+    <div class="card">
+        <div class="card-title">
+            <h4>New lead</h4>
+
+        </div>
+        <div class="row">
+            <div class="messages col-lg-8">
+                {% for msg in messages %}
+
+                <div class="alert alert-success" role="alert">
+                    {{msg.message}}
+                </div>
+
+                {% endfor %}
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="basic-form">
+                <form method="post">
+                    {% csrf_token %}
+
+
+                    <div class="form-row">
+                        <div class="col-md-12">
+                            <label for="{%if forms.title.errors %} inputError {% endif %}">{{forms.title.label}}</label>
+                            <input type="text" name="{{forms.title.name}}" class="form-control form-title" placeholder="Lead title">
+                            <span class="text-danger">{{forms.title.errors}}</span>
+                            <br/>
+
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="col-md-12">
+                            <label for="{%if forms.desc.errors %} inputError {% endif %}">Lead description</label>
+                            <textarea class="form-control form-title" name="{{forms.desc.name}}" placeholder="Lead description"></textarea>
+                            <span class="text-danger">{{forms.desc.errors}}</span>
+                          <br/>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="col-md-6">
+                            <label for="{%if forms.contact.errors %} inputError {% endif %}">{{forms.contact.label}}</label>
+                            <select name="{{ forms.contact.name }}" class="form-control input-default   select2" required>
+
+                                <option value="">Select value</option>
+                                {% for instance in forms.contact.field.queryset %}
+                                <option value="{{ instance.id }}" {% if instance.id in forms.contact.value %} selected {% endif %}>{{ instance.first_name }} {{instance.last_name}}</option>
+                                {% endfor %}
+                            </select>
+
+                            <span class="text-danger">{{forms.contact.errors}}</span>
+                            <br/>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="{%if forms.status.errors %} inputError {% endif %}">{{forms.status.label}}</label>
+
+                            <select name="{{ forms.status.name }}" class="form-control input-default   select2" required>
+
+                            <option value="">Select value</option>
+                            {% for instance in forms.status.field.queryset %}
+                            <option value="{{ instance.id }}">{{ instance.name }}</option>
+                                {% endfor %}
+                            </select>
+                            <span class="text-danger">{{forms.status.errors}}</span>
+                            <br/>
+                            <br/>
+                        </div>
+                    <div class="form-row">
+                        <div class="col-md-6">
+                            <label for="{%if form.errors %} inputError {% endif %}">{{forms.expected_sale_amount.label}}</label>
+                            <input type="text" name="{{forms.expected_sale_amount.name}}" class="form-control form-title money" placeholder="Expected sale">
+                            <span class="text-danger">{{forms.expected_sale_amount.errors}}</span>
+                            <br/>
+                        </div>
+                        <div class="col-md-6">
+
+                            <label for="{%if forms.expected_closing_date.errors %} inputError {% endif %}">{{forms.expected_closing_date.label}}</label>
+                            <input type="text" name="{{forms.expected_closing_date.name}}" class="form-control form-title has-error datepicker" placeholder="expected closing date">
+                            <span class="text-danger">{{forms.expected_closing_date.errors}}</span>
+
+                            <br/>
+                        </div>
+
+                    </div>
+                        <div class="form-row">
+                            <div class="col-md-6">
+                                <label for="{%if form.score.errors %} inputError {% endif %}">{{forms.score.label}}</label>
+                                <input type="text" name="{{forms.score.name}}" class="form-control form-title money" value="" placeholder="Score">
+                                <span class="text-danger">{{forms.score.errors}}</span>
+                                <br/>
+                            </div>
+
+
+                        </div>
+
+
+                    </div>
+                    <br>
+
+
+                    <div class="form-group">
+                        <div class="col-sm-offset-1 col-sm-10">
+                            <button type="submit" class="btn col-md-3 btn-primary">Save</button>
+                            <a href=""><button type="button" class="btn col-md-3 btn-danger">Cancel</button></a>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /# column -->
+<div class="col-lg-4">
+
+</div>
+<!-- /# column -->
+</div>
+{% endblock %}

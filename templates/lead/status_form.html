@@ -1,0 +1,66 @@
+{% extends 'master_template.html' %}
+{%  block body_block  %}
+<div class="col-lg-8">
+
+    <div class="card">
+        <div class="card-title">
+            <h3>New status</h3>
+
+        </div>
+        <div class="messages col-lg-8">
+            {% for msg in messages %}
+
+            <div class="alert alert-success" role="alert">
+                {{msg.message}}
+            </div>
+
+            {% endfor %}
+        </div>
+        <div class="card-body">
+            <div class="basic-form">
+                <form method="post" action="{% url 'newstatus'  %}">
+                    {% csrf_token %}
+
+
+                    <div class="form-row">
+                        <div class="col-md-12">
+                            <label for="{%if forms.name.errors %} inputError {% endif %}">{{forms.name.label}}</label>
+                            <input type="text" name="{{forms.name.name}}" class="form-control form-title" placeholder="Status name">
+                            <span class="text-danger">{{forms.name.errors}}</span>
+                            <br/>
+
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="col-md-12">
+                            <label for="{%if forms.order.errors %} inputError {% endif %}">{{forms.order.label}}</label>
+                            <input type="number" min="1" name="{{forms.order.name}}" class="form-control form-title" placeholder="Status order">
+                            <span class="text-danger">{{forms.order.errors}}</span>
+                            <br/>
+
+                        </div>
+                    </div>
+
+
+
+                    <br>
+
+
+                    <div class="form-group">
+                        <div class="col-sm-offset-1 col-sm-10">
+                            <button type="submit" class="btn col-md-3 btn-primary">Save</button>
+                            <a href=""><button type="button" class="btn col-md-3 btn-danger">Cancel</button></a>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /# column -->
+<div class="col-lg-4">
+
+</div>
+<!-- /# column -->
+</div>
+{% endblock %}

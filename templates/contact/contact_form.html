@@ -1,0 +1,112 @@
+{% extends 'master_template.html' %}
+{%  block body_block  %}
+<div class="col-lg-8">
+
+    <div class="card">
+        <div class="card-title">
+            <h4>New contact</h4>
+         <br/>
+            <br/>
+        </div>
+        <div class="row">
+            <div class="messages col-lg-8">
+                {% for msg in messages %}
+
+                <div class="alert alert-success" role="alert">
+                    {{msg.message}}
+                </div>
+
+                {% endfor %}
+            </div>
+        </div>
+
+        <div class="card-body">
+            <div class="basic-form">
+                <form method="post">
+                    {% csrf_token %}
+
+
+                        <div class="form-row">
+                            <div class="col-md-4">
+                                <label for="{%if forms.first_name.errors %} inputError {% endif %}">First name</label>
+                                <input type="text" name="{{forms.first_name.name}}" value="{% if "None" not in forms.first_name.value %} {{ forms.first_name.value }} {%endif%}" class="form-control form-title" placeholder="First name">
+                                <span class="text-danger">{{forms.first_name.errors}}</span>
+                                <br/>
+                            </div>
+                            <div class="col-md-4">
+
+                                <label for="{%if forms.last_name.errors %} inputError {% endif %}">{{forms.last_name.label}}</label>
+                                <input type="text" name="{{forms.last_name.name}}" value="{% if "None" not in forms.last_name.value %} {{ forms.last_name.value }} {%endif%}" class="form-control form-title has-error" placeholder="Last name">
+                                <span class="text-danger">{{forms.last_name.errors}}</span>
+
+                                <br/>
+                            </div>
+                            <div class="col-md-4">
+
+                                <label for="{%if forms.middle_name.errors %} inputError {% endif %}">{{forms.middle_name.label}}</label>
+                                <input type="text" name="{{forms.middle_name.name}}" value="{% if "None" not in forms.middle_name.value %} {{ forms.middle_name.value }} {%endif%}" class="form-control form-title has-error" placeholder="Middle name">
+                                <span class="text-danger">{{forms.middle_name.errors}}</span>
+
+                                <br/>
+                            </div>
+
+                        </div>
+                        <div class="form-row">
+                            <div class="col-md-6">
+                                <label for="{%if form.errors %} inputError {% endif %}">{{forms.mobile.label}}</label>
+                                <input type="text" name="{{forms.mobile.name}}" value="{% if "None" not in forms.mobile.value %} {{ forms.mobile.value }} {%endif%}" class="form-control form-title" placeholder="Mobile">
+                                <span class="text-danger">{{forms.mobile.errors}}</span>
+                                <br/>
+                            </div>
+                            <div class="col-md-6">
+
+                                <label for="{%if forms.email.errors %} inputError {% endif %}">{{forms.email.label}}</label>
+                                <input type="text" name="{{forms.email.name}}" value="{% if "None" not in forms.email.value %} {{ forms.email.value }} {%endif%}" class="form-control form-title has-error" placeholder="Email">
+                                <span class="text-danger">{{forms.email.errors}}</span>
+
+                                <br/>
+                            </div>
+
+                        </div>
+                        <div class="form-row">
+
+                            <div class="col-md-6">
+
+                                <label for="{%if forms.company.errors %} inputError {% endif %}">{{forms.company.label}}</label>
+                                <select name="{{ forms.company.name }}" class="form-control input-default   select2" required>
+
+                                    <option value="">Select value</option>
+                                    {% for instance in forms.company.field.queryset %}
+                                    <option value="{{ instance.id }}" {% if instance.id  in forms.company.value %} selected {% endif %}>{{ instance.name }}</option>
+                                    {% endfor %}
+                                </select>
+                                <span class="text-danger">{{forms.company.errors}}</span>
+
+                                <br/>
+                            </div>
+
+                        </div>
+
+
+                    </div>
+                    <br>
+
+
+                    <div class="form-group">
+                        <div class="col-sm-offset-1 col-sm-10">
+                            <button type="submit" class="btn col-md-3 btn-primary">Save</button>
+                            <a href=""><button type="button" class="btn col-md-3 btn-danger">Cancel</button></a>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /# column -->
+<div class="col-lg-4">
+
+</div>
+<!-- /# column -->
+</div>
+{% endblock %}

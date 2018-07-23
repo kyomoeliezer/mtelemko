@@ -1,0 +1,201 @@
+{% extends 'master_template.html' %}
+{%  block body_block  %}
+{% load humanize %}
+
+<div class="col-lg-12">
+    <div class="progress">
+        <div class="progress-bar progress-bar-striped active col-lg-10 progress-bar-info" role="progressbar"
+             aria-valuenow="{{lead.score}}" aria-valuemin="0" aria-valuemax="100" style="width:{{lead.score}}%">
+            {{lead.score}}%
+        </div>
+    </div>
+</div>
+<div class="col-lg-6">
+    <div class="box-inner">
+        <div class="box-header well" data-original-title="">
+            <h2><i class="glyphicon glyphicon-th-list"></i> Info</h2>
+
+            <div class="box-icon">
+                <a href="#" class="btn btn-setting btn-round btn-default"><i class="glyphicon glyphicon-cog"></i></a>
+                <a href="#" class="btn btn-minimize btn-round btn-default"><i
+                        class="glyphicon glyphicon-chevron-up"></i></a>
+                <a href="#" class="btn btn-close btn-round btn-default"><i class="glyphicon glyphicon-remove"></i></a>
+            </div>
+        </div>
+        <div class="box-content">
+            <div class="form-row">
+
+                <div class="form-group">
+                    <label>Lead  <a href="{% url 'updatelead' lead.id %}"><i class="glyphicon glyphicon-refresh"></i></a></label><br/>
+                    <hr>
+
+                    <span style="color:; font-size:14px;">{{lead.title|upper}}</span>
+                </div>
+            </div>
+            <div class="form-row">
+                    <label>Desc</label><br>
+
+                <span style="color:; font-size:13px;">{{lead.desc}}</span>
+            </div>
+            <br>
+            <br>
+            <div class="row">
+
+                <div class="form-group col-md-6">
+                    <label>Expected Sale</label>
+                    <input class="form-control form-title" value="{{lead.expected_sale_amount|intcomma}}"/>
+
+
+                </div>
+                <div class="form-group col-md-6">
+                    <label>Expected Sale</label>
+                    <input class="form-control form-title" value="{{lead.expected_closing_date|date}}"/>
+
+
+                </div>
+            </div>
+            <div class="row">
+
+                <div class="form-group col-md-6">
+                    <label>Status</label>
+                    <input  class="form-control form-title" value="{{lead.status.name}}"/>
+
+
+                </div>
+                <div class="form-group col-md-6">
+                    <label>Score %</label>
+                    <input class="form-control form-title" value="{{lead.score}}"/>
+
+
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+
+
+</div>
+<div class="col-lg-5">
+    <div class="col-lg-12">
+        <div class="box-inner">
+            <div class="box-header well" data-original-title="">
+                <h2><i class="glyphicon glyphicon-th-list"></i> Contact</h2>
+
+                <div class="box-icon">
+                    <a href="#" class="btn btn-setting btn-round btn-default"><i class="glyphicon glyphicon-cog"></i></a>
+                    <a href="#" class="btn btn-minimize btn-round btn-default"><i
+                            class="glyphicon glyphicon-chevron-up"></i></a>
+                    <a href="#" class="btn btn-close btn-round btn-default"><i class="glyphicon glyphicon-remove"></i></a>
+                </div>
+            </div>
+            <div class="box-content">
+                <div class="row">
+
+                    <div class="form-group col-md-6">
+                        <label>Person</label>
+                        <input class="form-control form-title" value="{{lead.contact.first_name}} {{lead.contact.last_name}}"/>
+
+
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label>Mobile</label>
+                        <input class="form-control form-title" value="{{lead.contact.mobile}}"/>
+
+
+                    </div>
+                </div>
+                <div class="row">
+
+                    <div class="form-group col-md-12">
+                        <label>Company Address</label><br/>
+
+                        {{lead.contact.company.name}} {{lead.contact.company.address}}
+                        {{lead.contact.company.city}}
+
+
+
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+    <div class="col-lg-12">
+        <div class="box-inner">
+            <div class="box-header well box-danger" data-original-title="">
+                <h2><i class="glyphicon glyphicon-th-list"></i> Meeting</h2>
+
+                <div class="box-icon">
+                    <a href="#" class="btn btn-setting btn-round btn-default"><i class="glyphicon glyphicon-cog"></i></a>
+                    <a href="#" class="btn btn-minimize btn-round btn-default"><i
+                            class="glyphicon glyphicon-chevron-up"></i></a>
+                    <a href="#" class="btn btn-close btn-round btn-default"><i class="glyphicon glyphicon-remove"></i></a>
+                </div>
+            </div>
+            <div class="box-content">
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Time</th>
+                        <th>Agenda</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+
+                    {% for meeting in meetings %}
+                    <tr>
+                        <td>{{meeting.date|date}}</td>
+                        <td>{{meeting.meeting_time}}</td>
+                        <td>{{meeting.agenda}}</td>
+                        <td class="center"><span class="label label-sm {% if 'scheduled' in meeting.meeting_status  %} label-warning{% else %} label-success {% endif %}">{{meeting.meeting_status}}</span> </td>
+
+                        <td>
+                            {% if 'scheduled' in meeting.meeting_status  %}
+                            <a href="{% url 'editmeeting' meeting.id %}"><i class="glyphicon glyphicon-refresh"></i></a>
+
+                            {% else %}
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+
+                    </tbody>
+                </table>
+
+
+
+            </div>
+
+        </div>
+    </div>
+
+</div>
+</div>
+<!--<div class="col-lg-4">
+    <div class="box-inner">
+        <div class="box-header well" data-original-title="">
+            <h2><i class="glyphicon glyphicon-th-list"></i> Meetings</h2>
+
+            <div class="box-icon">
+                <a href="#" class="btn btn-setting btn-round btn-default"><i class="glyphicon glyphicon-cog"></i></a>
+                <a href="#" class="btn btn-minimize btn-round btn-default"><i
+                        class="glyphicon glyphicon-chevron-up"></i></a>
+                <a href="#" class="btn btn-close btn-round btn-default"><i class="glyphicon glyphicon-remove"></i></a>
+            </div>
+        </div>
+        <div class="box-content">
+
+
+        </div>
+    </div>
+
+</div>-->
+
+{% endblock %}

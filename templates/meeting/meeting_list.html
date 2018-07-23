@@ -1,0 +1,86 @@
+{% extends 'master_template.html' %}
+{%  block body_block  %}
+<div class="col-lg-12">
+    <div class="box-inner">
+        <div class="box-header well" data-original-title="">
+            <h2><i class="glyphicon glyphicon-th-list"></i> Meeting</h2>
+
+            <div class="box-icon">
+                <a href="#" class="btn btn-setting btn-round btn-default"><i class="glyphicon glyphicon-cog"></i></a>
+                <a href="#" class="btn btn-minimize btn-round btn-default"><i
+                        class="glyphicon glyphicon-chevron-up"></i></a>
+                <a href="#" class="btn btn-close btn-round btn-default"><i class="glyphicon glyphicon-remove"></i></a>
+            </div>
+        </div>
+        <div class="row">
+            <div class="messages col-lg-8">
+                {% for msg in messages %}
+
+                <div class="alert alert-success" role="alert">
+                    {{msg.message}}
+                </div>
+
+                {% endfor %}
+            </div>
+
+        </div>
+        <div class="box-content">
+
+            <table class="table table-striped table-bordered bootstrap-datatable datatable responsive" id="table">
+                <thead>
+                <tr>
+
+                    <th><input type="checkbox" id="selectAll" value='cpo_submit'></th>
+                    <th>Lead</th>
+                    <th>Date</th>
+                    <th>Time</th>
+                    <th>Agenda</th>
+                    <th>Description</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for list in meeting %}
+                <tr>
+                    <td><input type="checkbox" name="checkinput" value="{{list.id}}"  ></td>
+                    <td class="center"><a href="{{lead.id}}">{{list.lead.title}}</a></td>
+                    <td class="center">{{list.date|date}}</td>
+                    <td class="center">{{list.meeting_time|time}}</td>
+                    <td class="center">{{list.agenda}}</td>
+                    <td class="center"> {{list.desc}}</td>
+                    <td class="center"><span class="label label-sm {% if 'scheduled' in list.meeting_status  %} label-warning{% else %} label-success {% endif %}">{{list.meeting_status}}</span> </td>
+                    <td class="center">
+                        {% if 'scheduled' in list.meeting_status  %}
+                        <a href="{% url 'editmeeting' list.id %}"><i class="glyphicon glyphicon-pencil"></i></a>
+                        <a href="{% url 'deletemeeting' list.id %}"><i class="glyphicon glyphicon-trash"></i></a>
+                        {% else %}
+                        {% endif %}
+
+                    </td>
+
+
+                    <!--        <td class="center">
+                               <?php if (($value->c_status=='created')||($value->c_status=='')||($value->c_status=='draft')){?>
+                               <a class="text-success" href="<?php echo base_url(); ?>customer/update/<?php echo $value->customer_id;?>">
+                                   <i class="glyphicon glyphicon-edit icon-white"></i>
+
+                               </a>
+                               <a href="javascript:;"  title="delete" class="text-danger" onclick="confirm_modal('<?php echo base_url(); ?>customer/delete/<?php echo $value->customer_id;?>');">
+                                   <i class="glyphicon glyphicon-trash icon-white"></i>
+                               </a>
+                           <?php }?>
+
+                               </td> -->
+
+
+                </tr>
+                {% endfor %}
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</div>
+{% endblock %}

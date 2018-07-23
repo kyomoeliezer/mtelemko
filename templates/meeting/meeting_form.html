@@ -1,0 +1,130 @@
+{% extends 'master_template.html' %}
+{%  block body_block  %}
+<div class="col-lg-8">
+
+    <div class="card">
+        <div class="card-title">
+            <h4>Schedule  meeting </h4>
+
+        </div>
+        <div class="row">
+            <div class="messages col-lg-8">
+                {% for msg in messages %}
+
+                <div class="alert alert-success" role="alert">
+                    {{msg.message}}
+                </div>
+
+                {% endfor %}
+            </div>
+
+        </div>
+        <div class="card-body">
+            <div class="basic-form">
+                <form method="post">
+                    {% csrf_token %}
+
+                    <div class="form-row">
+
+                        <div class="col-md-12">
+                            <label for="{%if form.lead.errors %} inputError {% endif %}">{{form.lead.label}}</label>
+
+                            <select name="{{ form.lead.name }}" class="form-control input-default   select2" required>
+
+                                <option value="">Select value</option>
+                                {% for instance in form.lead.field.queryset %}
+                                <option value="{{ instance.id }}">{{ instance.title }}</option>
+                                {% endfor %}
+                            </select>
+                            <span class="text-danger">{{form.lead.errors}}</span>
+                            <br/>
+                            <br/>
+                        </div>
+                    </div>
+
+
+                    <div class="form-row">
+                        <div class="col-md-12">
+                            <label for="{%if form.agenda.errors %} inputError {% endif %}">{{form.agenda.label}}</label>
+                            <input type="text" name="{{form.agenda.name}}" value="{% if "None" not in form.agenda.value %} {{ form.agenda.value }} {%endif%}" class="form-control form-title" placeholder="Agenda">
+                            <span class="text-danger">{{form.agenda.errors}}</span>
+                            <br/>
+
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="col-md-6">
+                            <label for="{%if form.date.errors %} inputError {% endif %}">Meeting date</label>
+                            <input type="text" name="{{form.date.name}}" autocomplete="off" value="{% if "None" not in form.date.value %} {{ form.date.value }} {%endif%}"  class="form-control form-title money datepicker" placeholder="Next meeting">
+                            <span class="text-danger">{{form.date.errors}}</span>
+                            <br/>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="{%if form.meeting_time.errors %} inputError {% endif %}">Meeting time</label>
+                            <input type="text" name="{{form.meeting_time.name}}"  autocomplete="off" value="{% if "None" not in form.meeting_time.value %} {{ form.meeting_time.value }} {%endif%}"  class="form-control form-title money timepicker1" placeholder="Meeting time">
+                            <span class="text-danger">{{form.meeting_time.errors}}</span>
+                            <br/>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="col-md-12">
+                            <label for="{%if form.desc.errors %} inputError {% endif %}">Meeting description</label>
+                            <textarea class="form-control form-title" name="{{form.desc.name}}" value="" placeholder="Lead description">{% if "None" not in form.desc.value %} {{ form.desc.value }} {%endif%}</textarea>
+                            <span class="text-danger">{{form.desc.errors}}</span>
+                            <br/>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="col-md-12">
+                            <label for="{%if form.meeting_status.errors %} inputError {% endif %}">Meeting status</label>
+                            <select name="{{ form.meeting_status.name }}" class="form-control input-default   select2" required>
+                                <option value="scheduled">Scheduled</option>
+                                <option value="done">Done</option>
+                            </select>
+                            <span class="text-danger">{{form.desc.errors}}</span>
+                            <br/>
+                        </div>
+                    </div>
+
+              <!--         <div class="form-row">
+                            <div class="col-md-6">
+                                <label for="{%if form.next_meeting_date.errors %} inputError {% endif %}">{{form.next_meeting_date.label}}</label>
+                                <input type="text" name="{{form.next_meeting_date.name}}" value="{% if "None" not in form.next_meeting_date.value %} {{ form.next_meeting_date.value }} {%endif%}"  class="form-control form-title money datepicker" placeholder="Next meeting">
+                                <span class="text-danger">{{form.next_meeting_date.errors}}</span>
+                                <br/>
+                            </div>
+                            <div class="col-md-6">
+
+                                <label for="{%if form.next_agenda.errors %} inputError {% endif %}">{{form.next_agenda.label}}</label>
+                                <textarea class="form-control form-title" value=""  name="{{form.next_agenda.name}}" placeholder="Next Agenda">{% if "None" not in form.next_agenda.value %} {{ form.next_agenda.value }} {%endif%}</textarea>
+                                <span class="text-danger">{{form.next_agenda.errors}}</span>
+
+                                <br/>
+                            </div>
+
+                        </div>-->
+
+
+                    </div>
+                    <br>
+
+
+                    <div class="form-group">
+                        <div class="col-sm-offset-1 col-sm-10">
+                            <button type="submit" class="btn col-md-3 btn-primary">Save</button>
+                            <a href=""><button type="button" class="btn col-md-3 btn-danger">Cancel</button></a>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /# column -->
+<div class="col-lg-4">
+
+</div>
+<!-- /# column -->
+</div>
+{% endblock %}

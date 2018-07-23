@@ -1,0 +1,91 @@
+{% extends 'master_template.html' %}
+{%  block body_block  %}
+<div class="col-lg-8">
+
+
+    <div class="card">
+        <div class="card-title">
+            <h4>New product</h4>
+            <br/>
+            <br/>
+        </div>
+        <div class="messages col-lg-8">
+            {% for msg in messages %}
+
+            <div class="alert alert-success" role="alert">
+                {{msg.message}}
+            </div>
+
+            {% endfor %}
+
+
+        </div>
+        <div class="card-body">
+            <div class="basic-form">
+                <form method="post">
+                    {% csrf_token %}
+
+                    <div class="form-row">
+                        <div class="col-md-8">
+
+                            <label for="{%if form.name.errors %} inputError {% endif %}">Product</label>
+                            <textarea class="form-control form-title" name="{{form.name.name}}" placeholder="Product name">{% if 'None' not in form.name.value  %} {{ form.name.value }}{% endif %}</textarea>
+                            <span class="text-danger">{{form.name.errors}}</span>
+                            <br/>
+
+
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="col-md-8">
+
+                            <label for="{%if form.description.errors %} inputError {% endif %}">Product  description</label>
+                            <textarea class="form-control form-title" name="{{form.description.name}}" placeholder="Product description">{% if 'None' not in form.description.value  %} {{ form.description.value }}{% endif %}</textarea>
+                            <span class="text-danger">{{form.description.errors}}</span>
+                            <br/>
+
+
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="col-md-6">
+                            <label for="{%if form.type.errors %} inputError {% endif %}">Type</label>
+                            <select name="{{ form.type.name }}" class="form-control input-default   select2" required>
+                                <option value="service" {% if 'service' not in form.type.value  %} selected{% endif %}>Service</option>
+                                <option value="product" {% if 'product' not in form.type.value  %} selected{% endif %}>Product</option>
+                            </select>
+                            <span class="text-danger">{{form.type.errors}}</span>
+
+                        </div>
+                        <div class="col-md-6">
+                            <label for="{%if form.tag.errors %} inputError {% endif %}">Tag</label>
+                            <input type="text" name="{{form.tag.name}}" class="form-control form-title" value="{% if 'None' not in form.tag.value  %} {{ form.tag.value }}{% endif %}" placeholder="Product tag">
+                            <span class="text-danger">{{form.tag.errors}}</span>
+                            <br/>
+                        </div>
+                    </div>
+
+
+
+            </div>
+            <br>
+
+
+            <div class="form-group">
+                <div class="col-sm-offset-1 col-sm-10">
+                    <button type="submit" class="btn col-md-3 btn-primary">Save</button>
+                    <a href=""><button type="button" class="btn col-md-3 btn-danger">Cancel</button></a>
+                </div>
+            </div>
+            </form>
+        </div>
+    </div>
+</div>
+</div>
+<!-- /# column -->
+<div class="col-lg-4">
+
+</div>
+<!-- /# column -->
+</div>
+{% endblock %}

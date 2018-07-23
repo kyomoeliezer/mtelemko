@@ -1,0 +1,90 @@
+{% extends 'master_template.html' %}
+{%  block body_block  %}
+<div class="col-lg-8">
+
+
+    <div class="card">
+        <div class="card-title">
+            <h4>New company</h4>
+            <br/>
+            <br/>
+        </div>
+        <div class="messages col-lg-8">
+            {% for msg in messages %}
+
+            <div class="alert alert-success" role="alert">
+                {{msg.message}}
+            </div>
+
+            {% endfor %}
+
+
+        </div>
+        <div class="card-body">
+            <div class="basic-form">
+                <form method="post">
+                    {% csrf_token %}
+
+
+                    <div class="form-row">
+                        <div class="col-md-8">
+                            <label for="{%if forms.first_name.errors %} inputError {% endif %}">Company name</label>
+                            <input type="text" name="{{forms.name.name}}" class="form-control form-title" placeholder="Company">
+                            <span class="text-danger">{{forms.name.errors}}</span>
+                            <br/>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="col-md-8">
+
+                            <label for="{%if forms.address.errors %} inputError {% endif %}">{{forms.address.label}}</label>
+                            <textarea class="form-control form-title" name="{{forms.address.name}}" placeholder="Address"></textarea>
+                            <span class="text-danger">{{forms.address.errors}}</span>
+
+
+                            <br/>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="col-md-8">
+
+                            <label for="{%if forms.street.errors %} inputError {% endif %}">{{forms.street.label}}</label>
+                            <input type="text" name="{{forms.street.name}}" class="form-control form-title" placeholder="Street">
+                            <span class="text-danger">{{forms.street.errors}}</span>
+
+                            <br/>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="col-md-8">
+
+                            <label for="{%if forms.city.errors %} inputError {% endif %}">{{forms.city.label}}</label>
+                            <input type="text" name="{{forms.city.name}}" class="form-control form-title" placeholder="City">
+                            <span class="text-danger">{{forms.city.errors}}</span>
+
+                            <br/>
+                        </div>
+                    </div>
+
+            </div>
+            <br>
+
+
+            <div class="form-group">
+                <div class="col-sm-offset-1 col-sm-10">
+                    <button type="submit" class="btn col-md-3 btn-primary">Save</button>
+                    <a href=""><button type="button" class="btn col-md-3 btn-danger">Cancel</button></a>
+                </div>
+            </div>
+            </form>
+        </div>
+    </div>
+</div>
+</div>
+<!-- /# column -->
+<div class="col-lg-4">
+
+</div>
+<!-- /# column -->
+</div>
+{% endblock %}
