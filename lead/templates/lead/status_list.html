@@ -1,0 +1,78 @@
+{% extends 'master_template.html' %}
+{%  block body_block  %}
+{% load roles %}
+{% is_operator request.user as op %}
+<div class="col-lg-12">
+    <div class="box-inner">
+        <div class="box-header well" data-original-title="">
+            <h2><i class="glyphicon glyphicon-th-list"></i> Status</h2>
+
+            <div class="box-icon">
+                <a href="#" class="btn btn-setting btn-round btn-default"><i class="glyphicon glyphicon-cog"></i></a>
+                <a href="#" class="btn btn-minimize btn-round btn-default"><i
+                        class="glyphicon glyphicon-chevron-up"></i></a>
+                <a href="#" class="btn btn-close btn-round btn-default"><i class="glyphicon glyphicon-remove"></i></a>
+            </div>
+        </div>
+        <div class="box-content table-responsive">
+
+
+            <table class="table tbl" id="table">
+                <thead>
+                <tr>
+
+                    <th>SN</th>
+                    <th>Status</th>
+                    <th>Order</th>
+                     {% if op %}
+                    <th>Action</th>
+                     {% endif %}
+                </tr>
+                </thead>
+                <tbody>
+                {% for list in status %}
+                <tr>
+
+                    <td class="center"><a href="{{lead.id}}">{{list.id|upper}}</a></td>
+                    <td class="center">{{list.name|upper}}</td>
+                    <td class="center">{{list.order|upper}}</td>
+                    {% if op %}
+                    <td class="center"><a href="{% url 'updatestatus'  list.id %}"> <i class="glyphicon glyphicon-pencil"></i></a> </td>
+                    {% endif %}
+
+
+
+
+                </tr>
+                {% endfor %}
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</div>
+{% endblock %}
+{%  block jss  %}
+<script type="text/javascript">
+    $(document).ready(function() {
+        $('.tbl').DataTable( {
+        destroy: true,
+        dom: 'Bfrtip',
+        buttons: [
+           {
+                    text: '+New',
+                    className: 'orange, btn btn-info',
+                     action: function (e, dt, node, config)
+                        {
+
+                          window.location="{% url 'newstatus' %}"
+
+                        }
+                }
+
+        ]
+    } );
+    });
+</script>
+{% endblock %}

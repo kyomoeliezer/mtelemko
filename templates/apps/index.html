@@ -1,0 +1,76 @@
+
+{% extends 'master_app.html' %}
+{%  block body_block  %}
+{% load humanize %}
+
+<div class="col-lg-12">
+
+    <div class="card">
+        <div class="card-title">
+            <h4><br/></h4>
+
+        </div>
+
+        <div class="card-body">
+            <div class="basic-form">
+                <div class=" row">
+                    <div class="col-md-3 col-sm-3 col-xs-6">
+                        <a data-toggle="tooltip" title="" class="well top-block" href="{% url 'yourleaddashboard' %}">
+                            <i class="glyphicon glyphicon-th-large blue"></i>
+
+                            <div><strong>SALES LEADS</strong></div>
+                            <div><br/><br/></div>
+                            <span ></span>
+                        </a>
+                    </div>
+
+                    <div class="col-md-3 col-sm-3 col-xs-6">
+                        <a data-toggle="tooltip" title=" " class="well top-block" href="{% url 'invoices' %}">
+                            <i class="glyphicon glyphicon-folder-close green"></i>
+
+                            <div>INVOICES</div>
+                            <div><br/><br/></div>
+
+                        </a>
+                    </div>
+
+                    <div class="col-md-3 col-sm-3 col-xs-6">
+                        <a data-toggle="tooltip" title="" class="well top-block" href="{% url 'tenderlist' %}">
+                            <i class="glyphicon glyphicon-shopping-cart yellow"></i>
+
+                            <div>TENDERS </div>
+                            <div><br/><br/></div>
+
+                        </a>
+                    </div>
+
+                    <div class="col-md-3 col-sm-3 col-xs-6">
+                        <a data-toggle="tooltip" title="" class="well top-block" href="{% url 'projectlist' %}">
+                            <i class="glyphicon glyphicon-th-list red"></i>
+
+                            <div>PROJECTS</div>
+                            <div><br/><br/></div>
+                        </a>
+                    </div>
+                    <div class="col-md-3 col-sm-3 col-xs-6">
+                        <a data-toggle="tooltip" title="" class="well top-block" href="{% url 'expenses' %}">
+                            <i class="glyphicon glyphicon-th-list red"></i>
+
+                            <div>EXPENSES</div>
+                            <div><br/><br/></div>
+                        </a>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /# column -->
+<div class="col-lg-4">
+
+</div>
+<!-- /# column -->
+
+{% endblock %}
+

@@ -1,0 +1,230 @@
+{% extends 'master_template.html' %}
+{%  block body_block  %}
+{% load humanize %}
+{% load general_tags %}
+
+
+<div class="col-lg-12">
+    <div class="progress">
+        <div class="progress-bar progress-bar-striped active col-lg-10 progress-bar-info" role="progressbar"
+             aria-valuenow="{{lead.score}}" aria-valuemin="0" aria-valuemax="100" style="width:{{lead.score}}%">
+            {{lead.score}}%
+        </div>
+    </div>
+</div>
+<div class="col-lg-6">
+    <div class="col-lg-12">
+    <div class="box-inner">
+        <div class="box-header well" data-original-title="">
+            <h2><i class="glyphicon glyphicon-th-list"></i> Info</h2>
+
+            <div class="box-icon">
+                <a href="#" class="btn btn-setting btn-round btn-default"><i class="glyphicon glyphicon-cog"></i></a>
+                <a href="#" class="btn btn-minimize btn-round btn-default"><i
+                        class="glyphicon glyphicon-chevron-up"></i></a>
+                <a href="#" class="btn btn-close btn-round btn-default"><i class="glyphicon glyphicon-remove"></i></a>
+            </div>
+        </div>
+        <div class="box-content">
+            <div class="form-row">
+
+                <div class="form-group">
+                    <label>PROJECT  <a href="{% url 'updateproject' project.id %}"><i class="glyphicon glyphicon-refresh"></i></a></label><br/>
+                    <hr>
+
+                    <span style="color:; font-size:14px;">{{project.title|upper}}</span>
+                </div>
+            </div>
+            <div class="form-row">
+                    <label>Desc</label><br>
+
+                <span style="color:; font-size:13px;">{{project.desc}}</span>
+            </div>
+            <br>
+            <br>
+            <div class="row">
+
+                <div class="form-group col-md-6">
+                    <label>Project Amount</label>
+                    <input class="form-control form-title" value="{{project.amount|floatformat|intcomma:2}}"/>
+
+
+                </div>
+                <div class="form-group col-md-6">
+                    <label>End Date</label>
+                    <input class="form-control form-title" value="{{project.end_date|date:'d.m.Y'}}"/>
+
+
+                </div>
+            </div>
+            <div class="row">
+
+                <div class="form-group col-md-6">
+                    <label>Status</label>
+                    <input  class="form-control form-title" value="{{project.status}}"/>
+                </div>
+                <div class="form-group col-md-6">
+                    <label>REMAINING</label>
+                    <input  class="form-control form-title" value=""/>
+                </div>
+
+            </div>
+
+
+        </div>
+    </div>
+    </div>
+    
+        <div class="col-lg-12">
+        <div class="box-inner">
+            <div class="box-header well box-danger" data-original-title="">
+                <h2><i class="glyphicon glyphicon-th-list"></i> TASKS</h2>
+
+                <div class="box-icon">
+                    <a href="javascript:;" onclick="showAjaxModal('{% url 'addtask' project.id %}');"  class="btn btn-round btn-default"><i class="glyphicon glyphicon-plus"></i></a>
+                    <a href="#" class="btn btn-minimize btn-round btn-default"><i
+                            class="glyphicon glyphicon-chevron-up"></i></a>
+                    <a  class="btn  btn-round btn-default"><i class="glyphicon glyphicon-plus"></i></a>
+                </div>
+            </div>
+            <div class="box-content">
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th>SN</th>
+                        <th>TASK</th>
+                       
+                    </tr>
+                    </thead>
+                    <tbody>
+
+                    {% for act in tasks %}
+                    <tr>
+                        <td width="10%"><span class="badge">{{forloop.counter}}</span>
+</td>
+                       <td> {% if 'completed' in act.status %} <del> {{act.name|title}}</del>{% else %} {{act.name}} {% endif %}<br/>
+                           <span class="font-size:10px;"> {{act.desc|linebreaks }}</span><br/>
+                      <span style="color:orange; font-size:9px;"> <i class="glyphicon glyphicon-user"></i>{{act.responsible.first_name|title}}&nbsp;&nbsp; &nbsp;&nbsp;{{act.end_date|date:'D d m Y'}}</span><br/>
+                      <hr color="red">
+                      <span style="color:#5499C7; font-size:9px;">  <a href="javascript:;" onclick="showAjaxModal('{% url 'edittask' act.id %}');"><i class="glyphicon glyphicon-pencil"></i></a> &nbsp;&nbsp; &nbsp;&nbsp;
+                            
+                             <a href="javascript:;" onclick="showAjaxModal('{% url 'workontask' act.id %}');"><i class="glyphicon glyphicon-refresh"></i></a> &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+                             
+                             <a href="javascript:;" onclick="confirm_modal('{% url 'deletetask' act.id %}');"><i class="glyphicon glyphicon-trash"></i></a></span>
+                      
+                      </td>
+                    {% endfor %}
+
+                    </tbody>
+                </table>
+
+
+
+            </div>
+
+        </div>
+    </div>
+
+
+</div>
+<div class="col-lg-5">
+    <div class="col-lg-12">
+        <div class="box-inner">
+            <div class="box-header well" data-original-title="">
+                <h2><i class="glyphicon glyphicon-th-list"></i> COSTS</h2>
+
+                <div class="box-icon">
+                    <a href="javascript:;" onclick="showAjaxModal('{% url 'addcost' project.id %}');" class="btn btn-round btn-default"><i class="glyphicon glyphicon-pencil"></i></a>
+                    <a href="#" class="btn btn-minimize btn-round btn-default"><i
+                            class="glyphicon glyphicon-chevron-up"></i></a>
+                    <a href="#" class="btn btn-close btn-round btn-default"><i class="glyphicon glyphicon-remove"></i></a>
+                </div>
+            </div>
+            <div class="box-content">
+                <div class="row">
+
+                    <div class="col-md-12 table-responsive">
+                        <table class="table tbl">
+                            <thead>
+                            <tr>
+                                <th style="width:5%;">SN</th>
+                                <th>ACT/ITEM</th>
+                                <th style="text-align:right;">AMOUNT</th>
+                                <th style="text-align:right;">ACT</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                                {% set 0 as sum %}
+                            {% for cost in costs %}
+                            {% add sum cost.amount as sum %}
+                            <tr>
+                                <td>{{forloop.counter}}</td>
+                                <td>{{cost.cost_name|title}}</td>
+                                <td style="text-align:right;">{{cost.amount|floatformat|intcomma:2}}</td>
+                                <td style="text-align:center;"><a href="javascript:;" onclick="showAjaxModal('{% url 'editcost' cost.id %}');" ><i class="glyphicon glyphicon-edit"></i></a><a href="javascript:;" onclick="confirm_modal('{% url 'deletecost' cost.id %}');"><i class="glyphicon glyphicon-trash"></i></a></td>
+                            </tr>
+                            {% endfor %}
+                            <tr>
+                                
+                                <td colspan="2"> </td>
+                                <td colspan="2" style="text-align:right;" ></td>
+                            </tr>
+                             <tr>
+                                
+                                <td colspan="2">TOTAL EXP</td>
+                                <td colspan="2" style="text-align:right;" >{{costs_total|floatformat|intcomma:2}}</td>
+                            </tr>
+                             {% product project.amount 0.05 as tax %}
+                            <tr>
+                                
+                                <td colspan="2">(LESS) TAX</td>
+                                <td colspan="2" style="text-align:right;" >{{tax|floatformat|intcomma:2}}</td>
+                            </tr>
+                            {% if project.amount_depostedbyclient %} {% set project.amount_depostedbyclient as amount %} {% else %}{% set project.amount as amount %}{% endif %}
+                            <tr>
+                               
+                                
+                                <td colspan="2"><b>PROJECT BALANCE</b></td>
+                                <td colspan="2" style="text-align:right;" ><b>{% minus amount costs_total as balance %} {% minus balance tax as balance %}  {{balance|floatformat|intcomma:2}}</b></td>
+                            </tr>
+                            {% if project.amount_depostedbyclient %}
+                            <tr>
+                                <td colspan="2" bgcolor="#fff" style="color:#000;padding: 15px; "><b>P.BALANCE [ACT]</b></td>
+                                <td colspan="2" style="text-align:right;color:#000;padding: 15px; " bgcolor="#fff" ><b>{% minus project.amount_depostedbyclient costs_total as balance %}   {{balance|floatformat|intcomma:2}}</b></td>
+                            </tr>
+                            {% endif %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+
+            </div>
+
+        </div>
+    </div>
+
+
+</div>
+</div>
+<!--<div class="col-lg-4">
+    <div class="box-inner">
+        <div class="box-header well" data-original-title="">
+            <h2><i class="glyphicon glyphicon-th-list"></i> Meetings</h2>
+
+            <div class="box-icon">
+                <a href="#" class="btn btn-setting btn-round btn-default"><i class="glyphicon glyphicon-cog"></i></a>
+                <a href="#" class="btn btn-minimize btn-round btn-default"><i
+                        class="glyphicon glyphicon-chevron-up"></i></a>
+                <a href="#" class="btn btn-close btn-round btn-default"><i class="glyphicon glyphicon-remove"></i></a>
+            </div>
+        </div>
+        <div class="box-content">
+
+
+        </div>
+    </div>
+
+</div>-->
+
+{% endblock %}

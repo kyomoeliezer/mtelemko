@@ -1,0 +1,120 @@
+{% extends 'master_template.html' %}
+{%  block body_block  %}
+{% load crispy_forms_tags %}
+<div class="col-lg-8">
+
+    <div class="card">
+        <div class="card-title">
+            <h4>NEW LEAD/OPPORTUNITY<br/></h4>
+
+        </div>
+        <div class="row">
+            <div class="messages col-lg-8">
+                {% for msg in messages %}
+
+                <div class="alert alert-success" role="alert">
+                    {{msg.message}}
+                </div>
+
+                {% endfor %}
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="basic-form">
+                <form method="post">
+                    {% csrf_token %}
+
+
+                    <div class="form-row">
+                        <div class="col-md-12">
+                             {{forms.title|as_crispy_field}}
+                            <br/>
+
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="col-md-12">
+                              {{forms.desc|as_crispy_field}}
+                          <br/>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="col-md-6">
+                            <div class="col-md-8">{{forms.contact|as_crispy_field}}</div>
+                           
+                            <div class="col-md-4">
+                                <br/>
+                                <span class="btn"><a href="javascript:;" onclick="showAjaxModal('{% url 'newcontact_onfly' %}');"><i class="glyphicon glyphicon-plus"></i>NEW</a></span></div>
+                        </div>
+                        <div class="col-md-6">
+                           {{forms.status|as_crispy_field}}
+                            <br/>
+                        </div>
+                    <div class="form-row">
+                        <div class="col-md-6">
+                            {{forms.expected_sale_amount|as_crispy_field}}
+                           
+                            <br/>
+                        </div>
+                        <div class="col-md-6">
+                            {{forms.expected_closing_date|as_crispy_field}}
+
+                            <br/>
+                        </div>
+
+                    </div>
+                        <div class="form-row">
+                            <div class="col-md-6">
+                                {{forms.campaign|as_crispy_field}}
+                                <br/>
+                            </div>
+                             <div class="col-md-6">
+                                {{forms.score|as_crispy_field}}
+                                <br/>
+                            </div>
+
+
+                        </div>
+                         <div class="form-row">
+                            <div class="col-md-6">
+                                {{forms.next_action|as_crispy_field}}
+                                <br/>
+                            </div>
+                             <div class="col-md-6">
+                                {{forms.next_action_date|as_crispy_field}}
+                                <br/>
+                            </div>
+                             <div class="col-md-6">
+                                {{forms.leadmanager|as_crispy_field}}
+                                <br/>
+                            </div>
+
+
+
+                        </div>
+
+
+                    </div>
+                    <br>
+
+
+                    <div class="form-group">
+                        <div class="col-sm-offset-1 col-sm-10">
+                            <button type="submit" class="btn col-md-3 btn-primary">Save</button>
+                            <a href="{% url 'leadlist' %}"><button type="button" class="btn col-md-3 btn-danger">Cancel</button></a>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /# column -->
+<div class="col-lg-4">
+
+</div>
+<!-- /# column -->
+</div>
+{% endblock %}
+

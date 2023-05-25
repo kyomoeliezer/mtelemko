@@ -1,39 +1,77 @@
+
 {% extends 'master_template.html' %}
 {%  block body_block  %}
-{% load staticfiles %}
-<div class="col-lg-8">
+<div class="col-lg-12">
+    <div class="box-inner">
+        <div class="box-header well" data-original-title="">
+            <h2><i class="glyphicon glyphicon-th-list"></i> Contacts</h2>
 
-    <div class="card">
-        <div class="card-title">
-            <h4>Contacts</h4>
-            <br/>
-            <br/>
-        </div>
-        <div class="row table">
-            {% for list in contacts %}
-            <div  class="col-md-4">
-                <a href="{% url 'updatecontact' list.id  %}" ><p><img class="dashboard-avatar" alt=""
-                     src="{%  static 'assets/img/person.png' %}" align="bottom"><br/><br/><br/>
-
-                    <strong>{{ list.first_name|upper}}  {{ list.last_name|upper}}<br></strong>
-                {{list.company.name}}</strong> <br>
-                {{list.company.address}}<br/>
-                    <strong>Mobile</strong> {{list.mobile}}<br/>
-            </p></a>
-
+            <div class="box-icon">
+                <a href="#" class="btn btn-setting btn-round btn-default"><i class="glyphicon glyphicon-cog"></i></a>
+                <a href="#" class="btn btn-minimize btn-round btn-default"><i
+                        class="glyphicon glyphicon-chevron-up"></i></a>
+                <a href="#" class="btn btn-close btn-round btn-default"><i class="glyphicon glyphicon-remove"></i></a>
             </div>
-
-
-            {% endfor %}
         </div>
+        <div class="box-content table-responsive">
 
+
+            <table class="table tbl" id="table">
+                <thead>
+                <tr>
+
+                    <th>SN</th>
+                    <th>Name</th>
+                    <th>Mobile</th>
+                    <th>Company</th>
+                    <th>Action</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for list in contacts %}
+                <tr>
+
+                    <td class="center"><a href="{{lead.id}}">{{list.id|upper}}</a></td>
+                    <td class="center">{{list.first_name|upper}} {{list.last_name|upper}}</td>
+                    <td class="center">{{list.mobile|upper}}</td>
+                    <td class="center">{{list.company|upper}}</td>
+                    <td class="center"><a href="{% url 'updatecontact' list.id  %}"> <i class="glyphicon glyphicon-pencil"></i></a> </td>
+
+
+
+
+
+                </tr>
+                {% endfor %}
+
+                </tbody>
+            </table>
+        </div>
     </div>
-</div>
-</div>
-<!-- /# column -->
-<div class="col-lg-4">
 
-</div>
-<!-- /# column -->
 </div>
 {% endblock %}
+{%  block jss  %}
+<script type="text/javascript">
+    $(document).ready(function() {
+        $('.tbl').DataTable( {
+        destroy: true,
+        dom: 'Bfrtip',
+        buttons: [
+           {
+                    text: '+New',
+                    className: 'orange, btn btn-info',
+                     action: function (e, dt, node, config)
+                        {
+
+                          window.location="{% url 'newcontact' %}"
+
+                        }
+                }
+
+        ]
+    } );
+    });
+</script>
+{% endblock %}
+

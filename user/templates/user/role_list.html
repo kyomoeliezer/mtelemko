@@ -1,0 +1,94 @@
+{% extends 'master_template.html' %}
+
+ {% load staticfiles %}
+   {% block dtablecss %}
+    <link href="{% static 'datatables/responsive.dataTables.min.css' %}" rel="stylesheet">
+    <link href="{% static 'datatables/dataTables.bootstrap4.css' %}" rel="stylesheet">
+    <link href="{% static 'datatables/table-pages.css' %}" rel="stylesheet">
+   {% endblock %}
+{% block body_block %}
+{% load crispy_forms_tags %}
+
+           <div class="page-header">
+			  <h3 class="page-title">{{header|upper}}</h3>
+              <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                  <li class="breadcrumb-item"><a href="#">User</a></li>
+                  <li class="breadcrumb-item active" aria-current="page"> Roles </li>
+                </ol>
+              </nav>
+            </div>
+            <div class="row">
+              <div class="col-md-8 grid-margin stretch-card">
+                <div class="card">
+                  <div class="card-body">
+                            <div class="table-responsive">
+                                  <table class="table tbl">
+                                      <thead>
+                                     <tr>
+                                        <th>SN</th>
+                                        <th>Jina</th>
+                                        <th>Code</th>
+                                        <th>Action</th>
+
+                                         </tr>
+
+                                            </thead>
+                                            <tbody>
+                                                {% for li in lists %}
+                                            <tr>
+                                                <th scope="row">{{forloop.counter}}</th>
+                                                <td>{{li.name}}</td>
+                                                <td>{{li.code}}</td>
+                                                <td>
+                                                     <a href="{% url 'update_role' pk=li.id %}"> <i class="glyphicon glyphicon-edit"></i></a>
+                                                     <a href=""> <i class="glyphicon glyphicon-trash"></i></a>
+
+
+
+                                            </tr>
+                                            {% endfor %}
+                                            </tbody>
+                                  </table>
+
+                  </div>
+                </div>
+              </div>
+              </div>
+            </div>
+{% endblock %}
+
+
+ {% block jss %}
+<script src="{%  static  'datatable2/jquery.dataTables.min.js' %}"></script>
+<script type="text/javascript" src="{%  static  'datatable2/dataTables.bootstrap.min.js' %}" ></script>
+<script src="{%  static  'datatable2/dataTables.buttons.min.js' %}"></script>
+<script src="{%  static  'datatable2/buttons.flash.min.js' %}"></script>
+<script src="{%  static  'datatable2/jszip.min.js' %}"></script>
+<script src="{%  static  'datatable2/pdfmake.min.js' %}"></script>
+<script src="{%  static  'datatable2/vfs_fonts.js' %}"></script>
+<script src="{%  static  'datatable2/buttons.html5.min.js' %}"></script>
+<script src="{%  static  'datatable2/buttons.print.min.js' %}"></script>
+  <script type="text/javascript">
+    $(document).ready(function() {
+        $('.tbl').DataTable( {
+        destroy: true,
+        dom: 'Bfrtip',
+        buttons: [
+           {
+                    text: '+New',
+                    className: 'orange, btn btn-info',
+                     action: function (e, dt, node, config)
+                        {
+
+                          window.location="{% url 'new_role' %}"
+                           //window.location="{% url 'new_role' %}"
+
+                        }
+                }
+
+        ]
+    } );
+    });
+</script>
+{% endblock %}

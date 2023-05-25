@@ -1,0 +1,77 @@
+<script type="text/javascript">
+    $(document).ready(function() {
+        $('.tbl').DataTable( {
+        destroy: true,
+        dom: 'Bfrtip',
+        ordering:false,
+        paging:false,
+        
+        buttons:[
+                {
+                    text: '+New',
+                    className: 'orange, btn btn-primary',
+                     action: function (e, dt, node, config)
+                        {
+
+                          window.location="{% url 'newtargetcontact' %}"
+
+                        }
+                },
+                
+                 {
+                    text: 'LISTS',
+                    className: 'orange, btn btn-info',
+                     action: function (e, dt, node, config)
+                        {
+
+                          window.location="{% url 'targetcontacts' %}"
+
+                        }
+                },
+                 {
+                    text: 'DROPPED',
+                    className: 'orange, btn btn-danger',
+                     action: function (e, dt, node, config)
+                        {
+
+                          window.location="{% url 'targetcontacts_dropped' %}"
+
+                        }
+                },
+                {
+                    text: 'FINDING OUT',
+                    className: 'orange, btn btn-warning',
+                     action: function (e, dt, node, config)
+                        {
+
+                          window.location="{% url 'targetcontacts_finding' %}"
+
+                        }
+                },
+                 {
+                    text: 'Q.CONTACTS',
+                    className: 'orange, btn btn-success',
+                     action: function (e, dt, node, config)
+                        {
+
+                          window.location="{% url 'targetcontacts_contacts' %}"
+
+                        }
+                },
+                {
+                    text: 'ANALYSIS',
+                    className: 'orange, btn btn-success',
+                     action: function (e, dt, node, config)
+                        {
+
+                          window.location="{% url 'targetcontact_analysis' %}"
+
+                        }
+                }
+                
+                 
+
+        ]
+    } );
+    });
+</script>

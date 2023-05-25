@@ -1,0 +1,146 @@
+
+                
+{% extends 'master_template.html' %}
+{%  block body_block  %}
+{% load general_tags %}
+{% load humanize %}
+<div class="col-lg-8">
+    <div class="box-inner">
+        <div class="box-header well" data-original-title="">
+            <h2><i class="glyphicon glyphicon-th-list"></i> {{header|upper}}</h2>
+
+            <div class="box-icon">
+                <a href="#" class="btn btn-setting btn-round btn-default"><i class="glyphicon glyphicon-cog"></i></a>
+                <a href="#" class="btn btn-minimize btn-round btn-default"><i
+                        class="glyphicon glyphicon-chevron-up"></i></a>
+                <a href="#" class="btn btn-close btn-round btn-default"><i class="glyphicon glyphicon-remove"></i></a>
+            </div>
+        </div>
+        <div class="box-content table-responsive">
+
+
+            <table class="table tbl" id="table">
+                                   <thead>
+                    <tr>
+                        <th>SN</th>
+                        <th>TASK</th>
+                       
+                    </tr>
+                    </thead>
+                    <tbody>
+
+                    {% for act in tasks %}
+                    <tr>
+                        <td width="10%"><span class="badge">{{forloop.counter}}</span>
+</td>
+                       <td> {% if 'completed' in act.status %} <del> {{act.name|title}}</del>{% else %}
+                       
+                        {% date_deff_with_today act.end_date as mudaumeisha %}
+                         {% if  act.status and mudaumeisha > 0 %}
+                         <span style="color:red">{{act.name}}</span>{%else %} {{act.name}}
+                         {% endif %} {% endif %}<br/>
+                           <span class="font-size:10px;"> {{act.desc|linebreaks }}</span><br/>
+                      <span style="color:orange; font-size:9px;"> <i class="glyphicon glyphicon-user"></i>{{act.responsible.first_name|title}}&nbsp;&nbsp; &nbsp;&nbsp;{{act.end_date|date:'D d m Y'}}</span><br/>
+                      <hr color="red">
+                      <span style="color:#5499C7; font-size:9px;">  <a href="javascript:;" onclick="showAjaxModal('{% url 'edittask' act.id %}');"><i class="glyphicon glyphicon-pencil"></i></a> &nbsp;&nbsp; &nbsp;&nbsp;
+                            
+                             <a href="javascript:;" onclick="showAjaxModal('{% url 'workontask' act.id %}');"><i class="glyphicon glyphicon-refresh"></i></a> &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+                             
+                             <a href="javascript:;" onclick="confirm_modal('{% url 'deletetask' act.id %}');"><i class="glyphicon glyphicon-trash"></i></a></span>
+                      
+                      </td>
+                    {% endfor %}
+
+                    </tbody>
+            </table>
+        </div>
+    </div>
+
+</div>
+<div class="col-lg-4">
+    <div class="box-inner">
+        <div class="box-header well" data-original-title="">
+            <h2><i class="glyphicon glyphicon-th-list"></i>UPCOMMING</h2>
+
+            <!--<div class="box-icon">
+                <a href="#" class="btn btn-setting btn-round btn-default"><i class="glyphicon glyphicon-cog"></i></a>
+                <a href="#" class="btn btn-minimize btn-round btn-default"><i
+                        class="glyphicon glyphicon-chevron-up"></i></a>
+                <a href="#" class="btn btn-close btn-round btn-default"><i class="glyphicon glyphicon-remove"></i></a>
+            </div>-->
+        </div>
+        <div class="box-content table-responsive">
+
+
+            <table class="table tbl" id="table">
+                                   <thead>
+                    <tr>
+                        <th>SN</th>
+                        <th>TASK</th>
+                       
+                    </tr>
+                    </thead>
+                    <tbody>
+
+                    {% for act in upcomming %}
+                    <tr>
+                        <td width="10%"><span class="badge">{{forloop.counter}}</span>
+</td>
+                       <td> {% if 'completed' in act.status %} <del> {{act.name|title}}</del>{% else %}{{act.name}} {% endif %}<br/>
+                       {{act.project|truncatewords:2 }}
+                        
+                      <span style="color:orange; font-size:9px;"> <i class="glyphicon glyphicon-user"></i>{{act.responsible.first_name|title}}&nbsp;&nbsp; &nbsp;&nbsp;{{act.end_date|date:'D d m Y'}}</span><br/>
+                      <hr color="red">
+                      <span style="color:#5499C7; font-size:9px;">  <a href="javascript:;" onclick="showAjaxModal('{% url 'edittask' act.id %}');"><i class="glyphicon glyphicon-pencil"></i></a> &nbsp;&nbsp; &nbsp;&nbsp;
+                            
+                             <a href="javascript:;" onclick="showAjaxModal('{% url 'workontask' act.id %}');"><i class="glyphicon glyphicon-refresh"></i></a> &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+                             
+                             <a href="javascript:;" onclick="confirm_modal('{% url 'deletetask' act.id %}');"><i class="glyphicon glyphicon-trash"></i></a></span>
+                      
+                      </td>
+                    {% endfor %}
+
+                    </tbody>
+            </table>
+        </div>
+    </div>
+
+</div>
+{% endblock %}
+{%  block jss  %}
+<script type="text/javascript">
+    $(document).ready(function() {
+        $('.tbl').DataTable( {
+        destroy: true,
+        dom: 'Bfrtip',
+        ordering:false,
+        buttons: [
+           {
+                    text: '+New',
+                    className: 'orange, btn btn-info',
+                     action: function (e, dt, node, config)
+                        {
+
+                          window.location="{% url 'newproject' %}"
+
+                        }
+                },
+
+                {
+                    text: 'Completed',
+                    className: 'orange, btn btn-success',
+                     action: function (e, dt, node, config)
+                        {
+
+                          window.location="{% url 'completedlist' %}"
+
+                        }
+                }
+
+        ]
+    } );
+    });
+</script>
+{% endblock %}
+
+

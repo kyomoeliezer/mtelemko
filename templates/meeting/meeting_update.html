@@ -1,10 +1,15 @@
 {% extends 'master_template.html' %}
+{% block topcssjs %}
+
+
+{% endblock %}
 {%  block body_block  %}
+{% load crispy_forms_tags %}
 <div class="col-lg-8">
 
     <div class="card">
         <div class="card-title">
-            <h4>Update meeting </h4>
+            <h4>Update  meeting </h4>
 
         </div>
         <div class="row">
@@ -17,76 +22,60 @@
 
                 {% endfor %}
             </div>
+
         </div>
         <div class="card-body">
             <div class="basic-form">
                 <form method="post">
                     {% csrf_token %}
 
+                    <div class="form-row">
+
+                        <div class="col-md-12">
+                           {{form.lead|as_crispy_field}}
+                            <br/>
+                            <br/>
+                        </div>
+                    </div>
+
 
                     <div class="form-row">
                         <div class="col-md-12">
-                            <label for="{%if form.agenda.errors %} inputError {% endif %}">{{form.agenda.label}}</label>
-                            <input type="text" name="{{form.agenda.name}}" value="{% if "None" not in form.agenda.value %} {{ form.agenda.value }} {%endif%}" class="form-control form-title" placeholder="Agenda">
-                            <span class="text-danger">{{form.agenda.errors}}</span>
+                           {{form.agenda|as_crispy_field}}
                             <br/>
 
                         </div>
                     </div>
                     <div class="form-row">
                         <div class="col-md-6">
-                            <label for="{%if form.date.errors %} inputError {% endif %}">Meeting date</label>
-                            <input type="text" name="{{form.date.name}}" value=" {{ form.date.value|date }}"  class="form-control form-title money datepicker" placeholder="Next meeting">
-                            <span class="text-danger">{{form.date.errors}}</span>
+                            {{form.date|as_crispy_field}}
                             <br/>
                         </div>
                         <div class="col-md-6">
-                            <label for="{%if form.meeting_time.errors %} inputError {% endif %}">Meeting time</label>
-                            <input type="text" name="{{form.meeting_time.name}}"  autocomplete="off" value="{{ form.meeting_time.value }}"  class="form-control form-title money timepicker1" placeholder="Meeting time">
-                            <span class="text-danger">{{form.meeting_time.errors}}</span>
+                           {{form.meeting_time|as_crispy_field}}
                             <br/>
                         </div>
                     </div>
 
                     <div class="form-row">
                         <div class="col-md-12">
-                            <label for="{%if form.desc.errors %} inputError {% endif %}">Meeting description</label>
-                            <textarea class="form-control form-title" name="{{form.desc.name}}" value="" placeholder="Lead description">{% if "None" not in form.desc.value %} {{ form.desc.value }} {%endif%}</textarea>
-                            <span class="text-danger">{{form.desc.errors}}</span>
+                             {{form.desc|as_crispy_field}}
                             <br/>
                         </div>
                     </div>
                     <div class="form-row">
-
                         <div class="col-md-12">
-                            <label for="{%if form.lead.errors %} inputError {% endif %}">{{form.lead.label}}</label>
-
-                            <select name="{{ form.lead.name }}" class="form-control input-default   select2" required>
-
-                                <option value="">Select value</option>
-                                {% for instance in form.lead.field.queryset %}
-                                <option value="{{ instance.id }}" {% if form.lead.value == instance.id %} selected {% endif %}>{{ instance.title }}</option>
-                                {% endfor %}
-                            </select>
-                            <span class="text-danger">{{form.lead.errors}}</span>
-                            <br/>
+                             {{form.meeting_status|as_crispy_field}}
                             <br/>
                         </div>
-                        <div class="form-row">
-                            <div class="col-md-6">
-                                <label for="{%if form.meeting_status.errors %} inputError {% endif %}">Meeting status</label>
-                                <select name="{{ form.meeting_status.name }}" class="form-control input-default   select2" required>
-                                    <option value="scheduled" {% if 'Scheduled' in form.meeting_status.value %}{% endif %}>Scheduled</option>
-                                    <option value="done" {% if 'Done' in  form.meeting_status.value %}{% endif %}>Done</option>
-                                </select>
-                                <span class="text-danger">{{form.desc.errors}}</span>
-                                <br/>
-                            </div>
-                        </div>
+                    </div>
+
+
 
 
                     </div>
                     <br>
+
 
 
                     <div class="form-group">
@@ -106,4 +95,22 @@
 </div>
 <!-- /# column -->
 </div>
+{% endblock %}
+{% block jss %}
+<script src="//code.jquery.com/ui/1.10.2/jquery-ui.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/timepicker/1.3.5/jquery.timepicker.min.js"></script>
+
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/timepicker/1.3.5/jquery.timepicker.min.css">
+
+<script type="text/javascript">
+       $(document).ready(function() {
+         $('#timepicker').timepicker({
+                timeFormat: 'HH:mm',
+                singleDatePicker: true,
+                showDropdowns: false,
+                timePicker: true,
+                defaultTime: '00',
+              });
+       });
+     </script>
 {% endblock %}

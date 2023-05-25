@@ -1,0 +1,43 @@
+<!--<li><a class="ajax-link" href="{% url 'invoices' %}"><i class="glyphicon glyphicon-th"></i><span> INVOICES</span></a></li>-->
+                        <li class="accordion">
+                            <a href="#"><i class="glyphicon glyphicon-plus"></i><span>Contacts</span></a>
+                            <ul class="nav nav-pills nav-stacked">
+                                <li><a href="{% url 'contactlist' %}">Contacts</a></li>
+                         <!--        <li><a href="{% url 'newcompany' %}">New company</a></li> -->
+                            </ul>
+                        </li>
+                        <li><a class="ajax-link" href="{% url 'campaigns' %}"><i class="glyphicon glyphicon-th"></i><span> CAMPAIGNS</span></a></li>
+                        <li class="accordion">
+                            <a href="{% url 'leadlist' %}"><i class="glyphicon glyphicon-plus"></i><span>LEADS</span></a>
+                            <ul class="nav nav-pills nav-stacked">
+                                <li><a href="{% url 'leadlist' %}">Leads & Opp</a></li>
+                                <!--<li><a href="{% url 'campaigns' %}">Campaigns</a></li>
+                                 <li><a href="{% url 'targetcontacts' %}">T.Contacts</a></li>-->
+                            </ul>
+                        </li>
+                     <li><a class="ajax-link" href="{% url 'targetcontacts' %}"><i class="glyphicon glyphicon-th"></i><span> TARGET CONTACTS</span></a></li>
+                        <li class="accordion">
+                            <a href="#"><i class="glyphicon glyphicon-plus"></i><span>Meeting</span></a>
+                            <ul class="nav nav-pills nav-stacked">
+                                <li><a href="{% url 'meetinglist' %}">Meetings</a></li>
+                            </ul>
+                        </li>
+                        <!--<li class="accordion">
+                            <a href="#"><i class="glyphicon glyphicon-plus"></i><span>Product</span></a>
+                            <ul class="nav nav-pills nav-stacked">
+                                <li><a href="{% url 'productlist' %}">Product</a></li>
+                                <li><a href="{% url 'newproduct' %}">New Products</a></li>
+                            </ul>
+                        </li>-->
+
+
+                        <li class="accordion">
+                            <a href="#"><i class="glyphicon glyphicon-plus"></i><span>Setting</span></a>
+                            <ul class="nav nav-pills nav-stacked">
+                                <li><a href="{% url 'statuslist' %}">Status</a></li>
+                                <li><a href="{% url 'users' %}">Users</a></li>
+                                <li><a href="{% url 'roles' %}">Roles</a></li>
+                                <li><a href="{% url 'permissions' %}">Permissions</a></li>
+                            </ul>
+                        </li>
+

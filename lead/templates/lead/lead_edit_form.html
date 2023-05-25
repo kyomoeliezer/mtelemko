@@ -1,0 +1,150 @@
+{% extends 'master_template.html' %}
+{%  block body_block  %}
+{% load crispy_forms_tags %}
+<div class="col-lg-8">
+
+    <div class="card">
+        <div class="card-title">
+            <h4>UPDATE LEAD</h4>
+
+        </div>
+        <div class="row">
+            <div class="messages col-lg-8">
+                {% for msg in messages %}
+
+                <div class="alert alert-success" role="alert">
+                    {{msg.message}}
+                </div>
+
+                {% endfor %}
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="basic-form">
+                <form method="post">
+                    {% csrf_token %}
+
+
+                    <div class="form-row">
+                        <div class="col-md-12">
+                            <label for="{%if form.title.errors %} inputError {% endif %}">{{form.title.label}}</label>
+                            <input type="text" name="{{form.title.name}}" value="{% if "None" not in form.title.value %} {{ form.title.value }} {%endif%}" class="form-control form-title" placeholder="Lead title">
+                            <span class="text-danger">{{form.title.errors}}</span>
+                            <br/>
+
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="col-md-12">
+                            <label for="{%if form.desc.errors %} inputError {% endif %}">Lead description</label>
+                            <textarea class="form-control form-title" name="{{form.desc.name}}"  placeholder="Lead description">{% if "None" not in form.desc.value %} {{ form.desc.value }} {%endif%}</textarea>
+                            <span class="text-danger">{{form.desc.errors}}</span>
+                            <br/>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="col-md-6">
+                            <label for="{%if form.contact.errors %} inputError {% endif %}">{{form.contact.label}}</label>
+                            <select name="{{ form.contact.name }}" class="form-control input-default   select2" required>
+
+                                <option value="">Select value</option>
+                                {% for instance in form.contact.field.queryset %}
+                                <option value="{{ instance.id }}"  {% if instance.id == form.contact.value  %} selected {% endif %}>{{ instance.first_name }} {{instance.last_name}}</option>
+                                {% endfor %}
+                            </select>
+
+                            <span class="text-danger">{{form.contact.errors}}</span>
+                            <br/>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="{%if form.status.errors %} inputError {% endif %}">{{form.status.label}}</label>
+
+                            <select name="{{ form.status.name }}" class="form-control input-default   select2" required>
+
+                                <option value="">Select value</option>
+                                {% for data in form.status.field.queryset %}
+                                <option value="{{ data.id }}" {% if form.status.value == data.id %} selected {% endif %}>{{ data.name }}</option>
+                                {% endfor %}
+                            </select>
+                            <span class="text-danger">{{form.status.errors}}</span>
+                            <br/>
+                            <br/>
+                        </div>
+                         <div class="form-row">
+                        <div class="col-md-12">
+                            <label for="{%if form.status_info.errors %} inputError {% endif %}">Status info</label>
+                            <textarea class="form-control form-title" name="{{form.status_info.name}}"  placeholder="Status description">{% if "None" not in form.status_info.value %} {{ form.status_info.value }} {%endif%}</textarea>
+                            <span class="text-danger">{{form.status_info.errors}}</span>
+                            <br/>
+                        </div>
+                    </div>
+                        <div class="form-row">
+                            <div class="col-md-6">
+                                <label for="{%if form.errors %} inputError {% endif %}">{{form.expected_sale_amount.label}}</label>
+                                <input type="text" name="{{form.expected_sale_amount.name}}" class="form-control form-title money" value="{{ form.expected_sale_amount.value }}" placeholder="Expected sale">
+                                <span class="text-danger">{{form.expected_sale_amount.errors}}</span>
+                                <br/>
+                            </div>
+                            <div class="col-md-6">
+
+                                <label for="{%if form.expected_closing_date.errors %} inputError {% endif %}">{{form.expected_closing_date.label}}</label>
+                                <input type="text" name="{{form.expected_closing_date.name}}" value=" {{ form.expected_closing_date.value|date:"Y-m-d" }}" class="form-control form-title has-error datepicker" placeholder="expected closing date">
+                                <span class="text-danger">{{form.expected_closing_date.errors}}</span>
+
+                                <br/>
+                            </div>
+
+                        </div>
+                        <div class="form-row">
+                            <div class="col-md-6">
+                                <label for="{%if form.score.errors %} inputError {% endif %}">{{form.score.label}}</label>
+                                <input type="text" name="{{form.score.name}}" class="form-control form-title money" value=" {{form.score.value }}" placeholder="Score">
+                                <span class="text-danger">{{form.score.errors}}</span>
+                                <br/>
+                            </div>
+                            <div class="col-md-6">
+                            <label for="{%if form.campaign.errors %} inputError {% endif %}">{{form.campaign.label}}</label>
+
+                            <select name="{{ form.campaign.name }}" class="form-control input-default   select2" required>
+
+                                <option value="">Select value</option>
+                                {% for data in form.campaign.field.queryset %}
+                                <option value="{{ data.id }}" {% if form.campaign.value == data.id %} selected {% endif %}>{{ data.name }}</option>
+                                {% endfor %}
+                            </select>
+                            <span class="text-danger">{{form.campaign.errors}}</span>
+                            <br/>
+                            <br/>
+                        </div>
+                            <div class="col-md-6">
+                                {{form.leadmanager|as_crispy_field}}
+                                <br/>
+                            </div>
+
+
+                        </div>
+
+
+                    </div>
+                    <br>
+
+
+                    <div class="form-group">
+                        <div class="col-sm-offset-1 col-sm-10">
+                            <button type="submit" class="btn col-md-3 btn-primary">Save</button>
+                            <a href=""><button type="button" class="btn col-md-3 btn-danger">Cancel</button></a>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /# column -->
+<div class="col-lg-4">
+
+</div>
+<!-- /# column -->
+</div>
+{% endblock %}

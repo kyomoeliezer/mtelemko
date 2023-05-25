@@ -1,0 +1,218 @@
+{% extends 'master_template.html' %}
+{%  block body_block  %}
+{% load crispy_forms_tags %}
+{% load invoice_tags %}
+{% load general_tags %}
+{% load humanize %}
+<style>
+    control[disabled], .form-control[readonly], fieldset[disabled] .form-control {
+    cursor: not-allowed;
+    background-color: #FFF;
+    opacity: 1;
+}
+</style>
+<div class="col-lg-12">
+
+    <div class="card">
+        <div class="card-title">
+            <div class="row">
+                <div class="col-md-8">
+                     <h4>JOB CARD: {{jobcard.jobcard_no}}  </h4>
+                </div>
+
+            </div>
+
+         <br/>
+            <br/>
+        </div>
+        <div class="row">
+            <div class="col-md-6 pull-right"> <a href="{% url 'jobcard_pdf'  pk=jobcard.id  %}"  class="btn btn-primary pull-right ">PDF</a>
+                <a href="{% url 'jobcard_update'  pk=jobcard.id  %}"  class="btn btn-warning pull-right ">UPDATE</a>
+
+            {% if not  invoice.is_cancelled  and not  invoice.is_aninvoice %}<a href="javascript:;" onclick="confirm_modal('{% url 'qoute2delete' invoice.id  %}');" class="btn btn-danger pull-right ">TRASH IT</a>{% endif %}
+
+
+
+
+            </div>
+            <div class="col-md-6 pull-left">
+                <a href="{% url 'invoice_detail'  pk=jobcard.invoice_id  %}"  class="btn btn-warning pull-left ">INVOICE</a>
+            </div>
+        </div>
+
+
+        <div class="card-body">
+            <div class="basic-form">
+                <div method="post">
+                    {% csrf_token %}
+                            <!--ABOVE INFO ---->
+
+                    <table class="table table-bordered table-hover">
+                        <thead>
+                        <tr>
+                            <th colspan="2">CLIENT DETAILS</th>
+                            <th colspan="2">PROJECT DETAILS</th>
+
+                        </tr>
+                        <tr>
+                            <th>CLIENT</th>
+                            <th>{{jobcard.client|upper}}</th>
+                            <th>PROJECT</th>
+                            <th>{{jobcard.project|upper}}</th>
+
+                        </tr>
+                        <tr>
+                            <th>ADDRESS</th>
+                            <th>{{jobcard.address}}</th>
+                            <th>DEVICES</th>
+                            <th>{{jobcard.device|upper}}</th>
+
+                        </tr>
+                        <tr>
+                            <th>CITY</th>
+                            <th>{{jobcard.city|upper}}</th>
+                            <th>TECH/ENG</th>
+                            <th>{{jobcard.technician|upper}}</th>
+
+                        </tr>
+
+                        </thead>
+
+                    </table>
+                    <!--invoice top bottom -->
+               <!--ABOVE INFO-->
+
+                 <div class="row">
+                  <div class="row col-md-12 table-responsive">
+
+                <div class="col-md-12">
+                  <table class="table table-bordered table-hover" id="tab_logic">
+                    <thead>
+                      <tr>
+                        <th width="5%" style="text-align:left;"> SN </th>
+                        <th class="text-center" style="text-align:left;"> ACTIVITIES </th>
+                          <th class="text-center" style="text-align:left;" width="15%"> STATUS </th>
+
+                      </tr>
+                    </thead>
+                    <tbody>
+                        {% set 0 as counter %}
+
+                      {% for line in invoicelines %}
+                      {% if line.status == 10 %}
+                      <tr id='addr0'>
+                          <td></td>
+                        <td>{{line.desc|linebreaks}}</td>
+                          <td></td>
+
+
+                      </tr>
+                      {% else %}
+                      {% int_add 1 counter as counter %}
+
+                      <tr id='addr0'>
+                          <td>{{counter}}</td>
+                        <td>{{line.desc|linebreaks}}</td>
+                          <td>{% if line.status == 10 %}{% elif line.status == 0 %} ON PROGRESS {% elif line.status == 1 %} DONE {% endif %}  </td>
+                      </tr>
+                      {% endif %}
+                    {% endfor %}
+                      <tr id='addr1'></tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+
+              <div class="row col-md-12">
+                <div class="col-md-6"></div>
+                <div class="col-md-6 float-right">
+
+                </div>
+
+            </div>
+
+                </div>
+
+
+
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /# column -->
+<div class="col-lg-4">
+
+</div>
+<!-- /# column -->
+</div>
+{% endblock %}
+{% block jss %}
+<script>
+$(document).ready(function(){
+    var i=1;
+    $("#add_row").click(function(){b=i-1;
+ var tr='<tr><td><input type="checkbox" class="case"/></td></td><td><input type="text" name="desc[]" id="product"  required="true" placeholder="Enter product" class="form-control"/></td> <td><input type="number" name="qty[]" id="qty" required="true"  class="form-control qty" step="0" min="0"/></td><td><input type="number" name="price[]" id="price" required="true" placeholder="Unite price" class="form-control price" step="0.00" min="0"/></td> <td><input type="number" name="total[]"" id="total" placeholder="0.00" class="form-control total" readonly/></td></tr>';
+  $('#tab_logic').append(tr);
+    });
+
+
+ $("#delete_row").on('click', function() {
+  if ($('.case:checkbox:checked').length > 0){
+  $('.case:checkbox:checked').parents("tr").remove();
+    calc();
+  }
+  else confirm_check();
+
+});
+
+
+  $("tr td.td").on("click",".remove", function(){
+    alert('mii');
+  $(this).parent("tr:first").remove();
+});
+
+  $('#tab_logic tbody').on('keyup change',function(){
+    calc();
+  });
+  $('#tax').on('keyup change',function(){
+    calc_total();
+  });
+
+
+});
+
+function calc()
+{
+  $('#tab_logic tbody tr').each(function(i, element) {
+    var html = $(this).html();
+    if(html!='')
+    {
+      var qty = $(this).find('.qty').val();
+      var price = $(this).find('.price').val();
+      $(this).find('.total').val(qty*price);
+
+      calc_total();
+    }
+    });
+}
+
+function calc_total()
+{
+  total=0;
+  $('.total').each(function() {
+        total += parseInt($(this).val());
+    });
+  $('#sub_total').val(total.toFixed(2));
+  //tax_sum=(total/100)*$('#tax').val();
+  tax_sum=0;//(total/100)*$('#tax').val();
+  //$('#tax_amount').val(tax_sum.toFixed(2));
+  $('#total_amount').val((total-tax_sum).toFixed(2));
+}
+
+
+
+
+</script>
+
+{% endblock %}

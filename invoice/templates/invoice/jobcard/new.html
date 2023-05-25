@@ -1,0 +1,217 @@
+{% extends 'master_template.html' %}
+{%  block body_block  %}
+{% load crispy_forms_tags %}
+<div class="col-lg-12">
+
+    <div class="card">
+        <div class="card-title">
+            <h4>GENERATE JOB CARD</h4>
+         <br/>
+            <br/>
+        </div>
+        <div class="row">
+            <div class="messages col-lg-12">
+                {% for msg in messages %}
+
+                <div class="alert alert-success" role="alert">
+                    {{msg.message}}
+                </div>
+
+                {% endfor %}
+            </div>
+        </div>
+        <div class="row">
+            <div class="messages col-lg-12">
+                {% for msg in form.errors %}
+
+                <div class="alert alert-success" role="alert">
+                    {{msg.message}}
+                </div>
+
+                {% endfor %}
+            </div>
+        </div>
+
+        <div class="card-body">
+            <div class="basic-form">
+                <form method="post">
+                    {% csrf_token %}
+                    <!--invoice top info-->
+                         <div class="form-row col-md-6">
+                            <div class="col-md-12">
+                                {{form.project|as_crispy_field}}<br/>
+                            </div>
+                            <div class="col-md-12">
+                              {{form.device|as_crispy_field}}
+                            </div>
+                             <div class="col-md-12">
+                              {{form.technician|as_crispy_field}}
+                            </div>
+                             </div>
+                             <div class="form-row col-md-6">
+                            <div class="col-md-12">
+                              {{form.client|as_crispy_field}}
+
+                            </div>
+                             <div class="col-md-12">
+                              {{form.address|as_crispy_field}}
+
+                            </div>
+                                 <div class="col-md-12">
+                              {{form.city|as_crispy_field}}
+
+                            </div>
+
+                             <div class="col-md-12">
+                              {{form.job_date|as_crispy_field}}
+
+                            </div>
+                        </div>
+
+
+
+
+                    <!----INOICE LINE---->
+                <div class="col-md-12 table-responsive">
+                  <table class="table table-bordered table-hover" id="tab_logic" style="width:100%;">
+                    <thead>
+                        <tr>
+                    <td colspan="6"  style="border: none;"><p class="text-danger">If the line is jobcard subheader put on items</p></td>
+
+                  </tr>
+                      <tr>
+                        <th class="text-center" width="5%" >  </th>
+                        <th class="text-center" width="10%">Order</th>
+                        <th class="text-center" > Activity </th>
+                          <th class="text-center" > TYPE </th>
+
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr id='addr0'>
+                        <td width="5%"><input name="ismain" type="checkbox" class="case" /></td>
+                        <td width="10%"><input name="order" class="form-control" type="number" required="true" /></td>
+                        <td width="70%"><textarea type="text" name="desc" id="product"  required="true" placeholder="Enter service" class="form-control"/></textarea></td>
+                          <td>
+                              <select class="form-control" name="status1"/>
+                              <option value="1">Done</option>
+                              <option value="0">On progress</option>
+                              <option value="10">Is a Device</option>
+                              </select>
+                      </td>
+                          </tr>
+                      <tr id='addr1'></tr>
+                    </tbody>
+                  </table>
+                </div>
+                    <!--bottom -->
+                 <div class="row col-md-12">
+              <div class="col-md-12">
+                <button id="add_row" class="btn btn-primary float-left"><i class="glyphicon glyphicon-plus"></i></button>
+               <!-- <button id="add_row_main" class="btn btn-info float-left"><i class="glyphicon glyphicon-ban-circle"></i></button>-->
+
+                <button id='delete_row' class="float-right btn btn-danger"><i class="glyphicon glyphicon-trash"></i></button>
+              </div>
+            </div>
+              <div class="row col-md-12">
+                <div class="col-md-6"></div>
+                <div class="col-md-6 float-right">
+
+                </div>
+
+            </div>
+                    <!-- /bottom rows-->
+                    <!---------INVOICE LINE-->
+
+
+                    <div class="form-group">
+                        <div class="col-sm-offset-1 col-sm-10">
+                            <button type="submit" class="btn col-md-3 btn-primary">Save</button>
+                            <a href="{% url 'contactlist' %}"><button type="button" class="btn col-md-3 btn-danger">Cancel</button></a>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /# column -->
+<div class="col-lg-4">
+
+</div>
+<!-- /# column -->
+</div>
+{% endblock %}
+{% block jss %}
+<script>
+$(document).ready(function(){
+    var i=1;
+    $("#add_row").click(function(){b=i-1;
+ var tr='<tr><td><input type="checkbox" name="ismain" class="case" /></td><td><input class="form-control" name="order" type="number" required="true" /></td><td><textarea type="text" name="desc" id="product"  required="true" placeholder="Enter service" class="form-control"/></textarea></td> <td><select class="form-control" name="status1"><option value="1">Done</option><option value="0">On progress</option><option value="10">Is a Device</option></select></td></tr>';
+  $('#tab_logic').append(tr);
+    });
+     $("#add_row_main").click(function(){b=i-1;
+ var tr='<tr><td><input  name="ismain" type="checkbox" class="case"/></td><td><input class="form-control" name="order" type="number" required="true" /></td><td><textarea type="text" name="desc" id="product"  required="true" placeholder="Enter service" class="form-control"/></textarea></td> <td><select class="form-control" name="status1"  required="true" ><option value="1">Done</option><option value="0">On progress</option><option value="10">Is a Device</option></select></td> </tr>';
+  $('#tab_logic').append(tr);
+    });
+
+
+ $("#delete_row").on('click', function() {
+  if ($('.case:checkbox:checked').length > 0){
+  $('.case:checkbox:checked').parents("tr").remove();
+    calc();
+  }
+  else confirm_check();
+
+});
+
+
+  $("tr td.td").on("click",".remove", function(){
+    alert('mii');
+  $(this).parent("tr:first").remove();
+});
+
+  $('#tab_logic tbody').on('keyup change',function(){
+    calc();
+  });
+  $('#tax').on('keyup change',function(){
+    calc_total();
+  });
+
+
+});
+
+function calc()
+{
+  $('#tab_logic tbody tr').each(function(i, element) {
+    var html = $(this).html();
+    if(html!='')
+    {
+      var qty = $(this).find('.qty').val();
+      var price = $(this).find('.price').val();
+      $(this).find('.total').val(qty*price);
+
+      calc_total();
+    }
+    });
+}
+
+function calc_total()
+{
+  total=0;
+  $('.total').each(function() {
+        total += parseInt($(this).val());
+    });
+  $('#sub_total').val(total.toFixed(2));
+  //tax_sum=(total/100)*$('#tax').val();
+  tax_sum=0;//(total/100)*$('#tax').val();
+  //$('#tax_amount').val(tax_sum.toFixed(2));
+  $('#total_amount').val((total-tax_sum).toFixed(2));
+}
+
+
+
+
+</script>
+
+{% endblock %}

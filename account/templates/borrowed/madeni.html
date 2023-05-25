@@ -1,0 +1,116 @@
+{% extends 'master_template.html' %}
+{% load account_tags %}
+{% load humanize %}
+{%  block body_block  %}
+<div class="col-lg-10">
+    <div class="box-inner">
+        <div class="box-header well" data-original-title="">
+            <h2><i class="glyphicon glyphicon-th-list"></i> {{header|upper}}</h2>
+
+            <div class="box-icon">
+                <a href="#" class="btn btn-setting btn-round btn-default"><i class="glyphicon glyphicon-cog"></i></a>
+                <a href="#" class="btn btn-minimize btn-round btn-default"><i
+                        class="glyphicon glyphicon-chevron-up"></i></a>
+                <a href="#" class="btn btn-close btn-round btn-default"><i class="glyphicon glyphicon-remove"></i></a>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="col-md-12 alert alert-info">
+                    <p>TUMEKOPA: <b>{{deni|floatformat|intcomma:2}}</b></p>
+					<p>TUMELIPA: <b>{{paid|floatformat|intcomma:2}}</b></p>
+					<p>BALANCE: <b>{{BALAN|floatformat|intcomma:2}}</b></p>
+                </div>
+            </div>
+        </div>
+        <div class="box-content table-responsive">
+
+
+            <table class="table tbl" id="" width="100%">
+                <thead>
+                <tr>
+
+                    <th>SN</th>
+                     <th>The Giver</th>
+                    <th>Date</th>
+                    <th>desc</th>
+                    <th>Payment desc</th>
+                    <th>Amount</th>
+                    <th>Paid</th>
+                      <th>Balance</th>
+                    <th></th>
+
+
+                </tr>
+                </thead>
+                <tbody>
+                {% for list in lists %}
+                <tr {% if list.is_paid %} bgcolor="green" {% endif %}>
+
+                    <td class="center">{{forloop.counter}}</td>
+                    <td class="" >{{list.loanee}}</td>
+                     <td class="center">{{list.date|date}}</td>
+                    <td class="center">{{list.desc}}</td>
+                     <td class="center">{{list.desc_payment}}</td>
+                    <td class="center">{{list.amount|floatformat:2|intcomma:2}}</td>
+                    <td class="text-align:right">{% borrowed_paid list.id as paid %} {{paid|floatformat:2|intcomma:2}}</td>
+                    <td class="text-align:right">{% borrowed_balance list.id as balc %} {{balc|floatformat:2|intcomma:2}}</td>
+                    <td>
+                        <a href="{% url 'update_borrowed' pk=list.id %}" ><i class="glyphicon glyphicon-edit"></i> </a>
+                        <a href="javascript:;" onclick="confirm_modal('{% url 'delete_borrowed' pk=list.id %} ');"><i class="glyphicon glyphicon-trash"></i> </a></td>
+
+
+
+                </tr>
+                {% endfor %}
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</div>
+{% endblock %}
+{%  block jss  %}
+<script type="text/javascript">
+    $(document).ready(function() {
+        $('.tbl').DataTable( {
+        
+        dom: 'Bfrtip',
+        ordering:false,
+        buttons: [
+            'excel',
+           {
+                    text: '+New',
+                    className: 'orange, btn btn-danger',
+                     action: function (e, dt, node, config)
+                        {
+
+                          window.location="{% url 'new_borrowed' %}"
+
+                        }
+                },{
+                    text: 'PAID',
+                    className: 'orange, btn btn-info',
+                     action: function (e, dt, node, config)
+                        {
+
+                          window.location="{% url 'borrowedpaid' %}"
+
+                        }
+                },{
+                    text: 'ACTIVE',
+                    className: 'orange, btn btn-danger',
+                     action: function (e, dt, node, config)
+                        {
+
+                          window.location="{% url 'borrowed' %}"
+
+                        }
+                }
+        ]
+    } );
+    });
+</script>
+{% endblock %}
+

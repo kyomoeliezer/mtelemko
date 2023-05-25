@@ -14,16 +14,30 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
+from django.conf import settings
 from django.urls import path,include
 from django.views.generic import TemplateView
+from lead.views import AppsView #DashboardINDIV
 
 
 urlpatterns = [
     path('account/',include('django.contrib.auth.urls')),
     path('admin/', admin.site.urls),
-    path('product/',include('product.urls')),
-    path('lead/',include('lead.urls')),
-    path('contact/', include('contact.urls')),
-    path('meeting/', include('meeting.urls')),
-    path('', TemplateView.as_view(template_name="lead/lead_profile.html")),
+    path('user/',include('user.urls')),
+    path('mproduct/',include('product.urls')),
+    path('lead-m/',include('lead.urls')),
+    path('tender-m/',include('tender.urls')),
+    path('project-m/',include('project.urls')),
+    path('mm-invoice/',include('invoice.urls')),
+    path('contact/lead-m/', include('contact.urls')),
+    path('maccounting/exp-m/', include('account.urls')),
+
+    path('meeting/lead-m/', include('meeting.urls')),
+    path('',AppsView.as_view(),name="apps"),
+    #path('',LeadList.as_view(),name="leadlist"),
+    #path('lead-list',LeadList.as_view(),name="leadlist"),
+    path('', TemplateView.as_view(template_name="master_app.html")),
+
+
 ]
+#urlpatterns += static(settings.STATIC_URL,document_root=settings.STATIC_ROOT)

@@ -1,0 +1,72 @@
+{% extends 'master_template.html' %}
+{%  block body_block  %}
+{% load general_tags %}
+<div class="col-lg-12">
+    <div class="box-inner">
+        <div class="box-header well" data-original-title="">
+            <h2><i class="glyphicon glyphicon-th-list"></i> {{header|upper}}</h2>
+
+            <div class="box-icon">
+                <a href="#" class="btn btn-setting btn-round btn-default"><i class="glyphicon glyphicon-cog"></i></a>
+                <a href="#" class="btn btn-minimize btn-round btn-default"><i
+                        class="glyphicon glyphicon-chevron-up"></i></a>
+                <a href="#" class="btn btn-close btn-round btn-default"><i class="glyphicon glyphicon-remove"></i></a>
+            </div>
+        </div>
+        <div class="box-content table-responsive">
+
+            <table class="table tbl" id="table" width="100%">
+                <thead>
+                <tr>
+                    {% load humanize %}
+               
+                    <th>SN</th>
+                    <th>COMP</th>
+                    <th>Contact</th>
+                    <th>Mobile</th>
+                    <th>Desc</th>
+                    <th>Followup</th>
+                    <!--<th>LOC</th>-->
+                    <th>CAMP</th>
+                    <!-- <th>Action</th>-->
+           
+                </tr>
+                </thead>
+                <tbody>
+                {% for camp in targets %}
+                <tr>
+                    <td class="center">{% if camp.worked_on %} <label class="label label-success">{{forloop.counter}}</label>{% else %}{{forloop.counter}} {% endif %}</td>
+                  <td class="center">{{camp.name}}</td>
+                 <td class="center">{{camp.contact_name}}</td>
+                 <td class="center">{{camp.mobile}}</td>
+                    <td class="center"> {{camp.visit_desc}}</td>
+                    
+                    
+                    <td class="center">{{camp.next_follup_date}}</td>
+                    <td class="center">{{camp.campaign}}</td>
+                    <!--<td class="center">
+                          
+                        
+                        <a href="javascript:;" onclick="confirm_modal('{% url 'delete_targetcontact' camp.id %}');" title="DELETE"><i class="glyphicon glyphicon-trash"></i></a>
+
+                    </td>
+                     -->
+                </tr>
+                {% endfor %}
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</div>
+{% endblock %}
+
+{%  block jss  %}
+{% include "lead/target/target_script.html" %}
+{% endblock %}
+
+
+
+
+

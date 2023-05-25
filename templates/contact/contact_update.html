@@ -1,5 +1,6 @@
 {% extends 'master_template.html' %}
 {%  block body_block  %}
+{% load crispy_forms_tags %}
 <div class="col-lg-8">
 
     <div class="card">
@@ -27,65 +28,47 @@
 
 
                     <div class="form-row">
-                        <div class="col-md-4">
-                            <label for="{%if form.first_name.errors %} inputError {% endif %}">First name</label>
-                            <input type="text" name="{{form.first_name.name}}" value="{% if "None" not in form.first_name.value %} {{ form.first_name.value }} {%endif%}" class="form-control form-title" placeholder="First name">
-                            <span class="text-danger">{{form.first_name.errors}}</span>
-                            <br/>
+                            <div class="col-md-4">
+                                {{form.first_name|as_crispy_field}}
+                                <br/>
+                            </div>
+                            <div class="col-md-4">
+
+                              {{form.middle_name|as_crispy_field}}
+
+                                <br/>
+                            </div>
+                            <div class="col-md-4">
+
+                              {{form.last_name|as_crispy_field}}
+
+                                <br/>
+                            </div>
+
                         </div>
-                        <div class="col-md-4">
-
-                            <label for="{%if form.last_name.errors %} inputError {% endif %}">{{form.last_name.label}}</label>
-                            <input type="text" name="{{form.last_name.name}}" value="{% if "None" not in form.last_name.value %} {{ form.last_name.value }} {%endif%}" class="form-control form-title has-error" placeholder="Last name">
-                            <span class="text-danger">{{form.last_name.errors}}</span>
-
-                            <br/>
+                     <div class="form-row">
+                            <div class="col-md-6">
+                               {{form.mobile|as_crispy_field}}
+                            </div>
+                            <div class="col-md-6">
+                             {{form.email|as_crispy_field}}
+                            </div>
                         </div>
-                        <div class="col-md-4">
-
-                            <label for="{%if form.middle_name.errors %} inputError {% endif %}">{{form.middle_name.label}}</label>
-                            <input type="text" name="{{form.middle_name.name}}" value="{% if "None" not in form.middle_name.value %} {{ form.middle_name.value }} {%endif%}" class="form-control form-title has-error" placeholder="Middle name">
-                            <span class="text-danger">{{form.middle_name.errors}}</span>
-
-                            <br/>
-                        </div>
-
-                    </div>
-                    <div class="form-row">
-                        <div class="col-md-6">
-                            <label for="{%if form.errors %} inputError {% endif %}">{{form.mobile.label}}</label>
-                            <input type="text" name="{{form.mobile.name}}" value="{% if "None" not in form.mobile.value %} {{ form.mobile.value }} {%endif%}" class="form-control form-title" placeholder="Mobile">
-                            <span class="text-danger">{{form.mobile.errors}}</span>
-                            <br/>
-                        </div>
-                        <div class="col-md-6">
-
-                            <label for="{%if form.email.errors %} inputError {% endif %}">{{form.email.label}}</label>
-                            <input type="text" name="{{form.email.name}}" value="{% if "None" not in form.email.value %} {{ form.email.value }} {%endif%}" class="form-control form-title has-error" placeholder="Email">
-                            <span class="text-danger">{{form.email.errors}}</span>
-
-                            <br/>
-                        </div>
-
-                    </div>
                     <div class="form-row">
 
-                        <div class="col-md-6">
+                            <div class="col-md-6">
 
-                            <label for="{%if form.company.errors %} inputError {% endif %}">{{form.company.label}}</label>
-                            <select name="{{ form.company.name }}" class="form-control input-default   select2" required>
+                                 {{form.company|as_crispy_field}}
+                            </div>
+                            <div class="col-md-6">
 
-                                <option value="">Select value</option>
-                                {% for instance in form.company.field.queryset %}
-                                <option value="{{ instance.id }}" {% if instance.id  in form.company.value %} selected {% endif %}>{{ instance.name }}</option>
-                                {% endfor %}
-                            </select>
-                            <span class="text-danger">{{form.company.errors}}</span>
+                                 {{form.address|as_crispy_field}}
+                            </div>
+                            <div class="col-md-6">
 
-                            <br/>
+                                 {{form.city|as_crispy_field}}
+                            </div>
                         </div>
-
-                    </div>
 
 
             </div>

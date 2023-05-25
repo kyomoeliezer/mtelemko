@@ -1,0 +1,251 @@
+{% extends 'master_template.html' %}
+{%  block body_block  %}
+{% load humanize %}
+
+<div class="col-lg-12">
+    <div class="progress">
+        <div class="progress-bar progress-bar-striped active col-lg-10 progress-bar-info" role="progressbar"
+             aria-valuenow="{{lead.score}}" aria-valuemin="0" aria-valuemax="100" style="width:{{lead.score}}%">
+            {{lead.score}}%
+        </div>
+    </div>
+</div>
+<div class="col-lg-6">
+    <div class="box-inner">
+        <div class="box-header well" data-original-title="">
+            <h2><i class="glyphicon glyphicon-th-list"></i> Info</h2>
+
+            <div class="box-icon">
+                <a href="#" class="btn btn-setting btn-round btn-default"><i class="glyphicon glyphicon-cog"></i></a>
+                <a href="#" class="btn btn-minimize btn-round btn-default"><i
+                        class="glyphicon glyphicon-chevron-up"></i></a>
+                <a href="#" class="btn btn-close btn-round btn-default"><i class="glyphicon glyphicon-remove"></i></a>
+            </div>
+        </div>
+        <div class="box-content">
+            <div class="form-row">
+
+                <div class="form-group">
+                    <label>Campaign  <a href="{% url 'updatecampaign' camp.id %}"><i class="glyphicon glyphicon-refresh"></i></a></label><br/>
+                    <hr>
+
+                    <span style="color:; font-size:14px;">{{camp.name|upper}}</span>
+                </div>
+            </div>
+            <div class="form-row">
+                    <label>Desc</label><br>
+
+                <span style="color:; font-size:13px;">{{camp.desc}}</span>
+            </div>
+            <br>
+            <br>
+            <div class="form-row">
+                    <label>Script</label><br>
+
+                <span style="color:; font-size:13px;">{{camp.script}}</span>
+            </div>
+            <br>
+            <div class="row">
+
+                <div class="form-group col-md-6">
+                   <label>Target</label><br>
+
+                <span style="color:; font-size:13px;"><label class="label label-success">{{camp.target_lead_no}}</label></span>
+                </div>
+                <div class="form-group col-md-6">
+                   
+                </div>
+            </div>
+            <div class="row">
+
+                <div class="form-group col-md-6">
+                     <label>Start</label><br>
+
+                <span style="color:; font-size:13px;">{{camp.campaign_start|date:'d.m.Y'}}</span>
+
+                </div>
+                <div class="form-group col-md-6">
+                    <label>End</label><br>
+
+                <span style="color:; font-size:13px;">{{camp.campaign_end|date:'d.m.Y'}}</span>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+
+
+</div>
+<!--leads-->
+<div class="col-lg-5">
+    <!--INVOICE PROFILE-->
+    <div class="col-lg-12">
+        <div class="box-inner">
+            <div class="box-header well" data-original-title="">
+                <h2><i class="glyphicon glyphicon-th-list"></i> INVOICES</h2>
+
+                <!--<div class="box-icon">
+                    <a href="#" class="btn btn-setting btn-round btn-default"><i class="glyphicon glyphicon-cog"></i></a>
+                    <a href="#" class="btn btn-minimize btn-round btn-default"><i
+                            class="glyphicon glyphicon-chevron-up"></i></a>
+                    <a href="#" class="btn btn-close btn-round btn-default"><i class="glyphicon glyphicon-remove"></i></a>
+                </div>-->
+            </div>
+            <div class="box-content">
+                <div class="row">
+                    <div class="col-md-12">
+                        {% if leads %}
+                        <table class="table tbl">
+
+                            <thead>
+                                <tr>
+                                    <th></th>
+                                    <th></th>
+                                </tr>
+
+                            </thead>
+                            <tbody>
+                                {% for ld in invoices %}
+                                <tr>
+                                    <td>{{ld.stat}}({{ld.total}})</td>
+                                    <td>{{ld.val|floatformat:2|intcomma:2}}</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                           </table>
+                           {% else %}
+                           <p>No leads yet </p>
+                           {% endif %}
+                    </div>
+
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <!--/END-->
+    <div class="col-lg-12">
+        <div class="box-inner">
+            <div class="box-header well" data-original-title="">
+                <h2><i class="glyphicon glyphicon-th-list"></i> LEADS</h2>
+
+                <div class="box-icon">
+                    <a href="#" class="btn btn-setting btn-round btn-default"><i class="glyphicon glyphicon-cog"></i></a>
+                    <a href="#" class="btn btn-minimize btn-round btn-default"><i
+                            class="glyphicon glyphicon-chevron-up"></i></a>
+                    <a href="#" class="btn btn-close btn-round btn-default"><i class="glyphicon glyphicon-remove"></i></a>
+                </div>
+            </div>
+            <div class="box-content">
+                <div class="row">
+                    <div class="col-md-12">
+                        {% if leads %}
+                        <table class="table tbl">
+                            
+                            <thead>
+                                <tr>
+                                    <th></th>
+                                    <th></th>
+                                </tr>
+                                
+                            </thead>
+                            <tbody>
+                                {% for ld in leads %}
+                                <tr>
+                                    <td>{{ld.stat}}({{ld.total}})</td>
+                                    <td>{{ld.opp_val|floatformat:2|intcomma:2}}</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                           </table>
+                           {% else %}
+                           <p>No leads yet </p>
+                           {% endif %}
+                    </div>
+
+                   
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <div class="col-lg-12">
+
+    </div>
+
+</div>
+<!--end leades-->
+<!--leads-->
+<div class="col-lg-5">
+    <div class="col-lg-12">
+        <div class="box-inner">
+            <div class="box-header well" data-original-title="">
+                <h2><i class="glyphicon glyphicon-th-list"></i> TARGET CONTACTS</h2>
+
+                <div class="box-icon">
+                    <a href="#" class="btn btn-setting btn-round btn-default"><i class="glyphicon glyphicon-cog"></i></a>
+                    <a href="#" class="btn btn-minimize btn-round btn-default"><i
+                            class="glyphicon glyphicon-chevron-up"></i></a>
+                    <a href="#" class="btn btn-close btn-round btn-default"><i class="glyphicon glyphicon-remove"></i></a>
+                </div>
+            </div>
+            <div class="box-content">
+                <div class="row">
+                    <div class="col-md-12"><table class="table tbl">
+                            
+                            <thead>
+                                <tr>
+                                    <th>TARGET NO:</th>
+                                    <th>{{contact_total}}</th>
+                                </tr>
+                                
+                            </thead>
+                            </table>
+                            </div>
+                    <div class="col-md-12">
+                        {% if contacts %}
+                        <table class="table tbl">
+                            
+                            <thead>
+                                <tr>
+                                    <th></th>
+                                    <th></th>
+                                </tr>
+                                <tr>
+                                    <th>VISITED</th>
+                                    <th>{{visted}}</th>
+                                </tr>
+                                
+                            </thead>
+                            <tbody>
+                                {% for ld in contacts %}
+                                <tr>
+                                    <td>{{ld.status|upper}}</td>
+                                    <td>{% if 'dropped' in ld.status %} <label class="label label-danger">{{ld.total}}</label>{% elif 'contact' in ld.status %}<label class="label label-success">{{ld.total}}</label>{% else %} <label class="label label-default">{{ld.total}}</label>{% endif %}</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                           </table>
+                           {% else %}
+                           <p>No contacts yet </p>
+                           {% endif %}
+                    </div>
+
+                   
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <div class="col-lg-12">
+
+    </div>
+
+</div>
+<!--end leades-->
+</div>
+
+
+{% endblock %}

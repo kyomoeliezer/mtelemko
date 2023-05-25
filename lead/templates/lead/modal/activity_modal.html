@@ -1,0 +1,90 @@
+
+<div class="col-lg-12">
+{% load crispy_forms_tags %}
+    <div class="card">
+        <div class="card-title">
+            <h4>New contact</h4>
+         <br/>
+            <br/>
+        </div>
+ 
+
+        <div class="card-body">
+            <div class="basic-form">
+               
+
+ <form method="post"  action="" class="onflycontact">
+
+                        <div class="form-row">
+                            <div class="col-md-12">
+                                {{form.followup|as_crispy_field}}
+                                <br/>
+                            </div>
+                            <div class="col-md-6">
+
+                              {{form.followup_by|as_crispy_field}}
+
+                                <br/>
+                            </div>
+
+
+                        </div>
+
+                        <div class="form-group">
+                        <div class="col-sm-offset-1 col-sm-10">
+                            <button type="submit" class="btn col-md-3 btn-primary">Save</button>
+                        </div>
+                    </div>
+                      </form>
+
+
+                    </div>
+                    <br>
+
+
+                    
+              
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /# column -->
+<div class="col-lg-4">
+
+</div>
+<!-- /# column -->
+</div>
+</script>
+
+
+<script>
+
+
+$('.onflycontact').submit(function (ev) {
+    //alert('done');
+    ev.preventDefault();
+
+
+ var $body = $("body");
+
+      $.ajax({
+      type: "POST",
+      {% if pk %} url: '{% url 'lead_followup_edit' pk %}', {% else %} url: '{% url 'lead_followup' lead_id %}', {% endif %}
+      data:$('.onflycontact').serialize(),
+
+      success:  function(data){
+
+       location.reload();
+      }
+
+    });
+    return;
+
+
+});
+
+
+</script>
+
+
+

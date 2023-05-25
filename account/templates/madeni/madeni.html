@@ -1,0 +1,92 @@
+{% extends 'master_template.html' %}
+{% load invoice_tags %}
+{% load humanize %}
+{%  block body_block  %}
+<div class="col-lg-7">
+    <div class="box-inner">
+        <div class="box-header well" data-original-title="">
+            <h2><i class="glyphicon glyphicon-th-list"></i> {{header|upper}}</h2>
+
+            <div class="box-icon">
+                <a href="#" class="btn btn-setting btn-round btn-default"><i class="glyphicon glyphicon-cog"></i></a>
+                <a href="#" class="btn btn-minimize btn-round btn-default"><i
+                        class="glyphicon glyphicon-chevron-up"></i></a>
+                <a href="#" class="btn btn-close btn-round btn-default"><i class="glyphicon glyphicon-remove"></i></a>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="col-md-12 alert alert-info">
+                    <p>MADENI: <b>{{deni|floatformat|intcomma:2}}</b></p>
+					<p>YALIOLIPWA: <b>{{paid|floatformat|intcomma:2}}</b></p>
+                </div>
+            </div>
+        </div>
+        <div class="box-content table-responsive">
+
+
+            <table class="table tbl" id="" width="100%">
+                <thead>
+                <tr>
+
+                    <th>SN</th>
+                     <th>Champion</th>
+                    <th>Date</th>
+                    <th>desc</th>
+                    <th>Payment desc</th>
+                    <th>Amount</th>
+                    <th></th>
+
+
+                </tr>
+                </thead>
+                <tbody>
+                {% for list in lists %}
+                <tr {% if list.is_paid %} bgcolor="green" {% endif %}>
+
+                    <td class="center">{{forloop.counter}}</td>
+                    <td class="" >{{list.champion}}</td>
+                     <td class="center">{{list.date|date}}</td>
+                    <td class="center">{{list.desc}}</td>
+                     <td class="center">{{list.desc_payment}}</td>
+                    <td class="center">{{list.amount|floatformat:2|intcomma:2}}</td>
+                    <td>
+                        <a href="{% url 'update_madeni' pk=list.id %}" ><i class="glyphicon glyphicon-edit"></i> </a>
+                        <a href="javascript:;" onclick="confirm_modal('{% url 'delete_madeni' pk=list.id %} ');"><i class="glyphicon glyphicon-trash"></i> </a></td>
+
+
+
+                </tr>
+                {% endfor %}
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</div>
+{% endblock %}
+{%  block jss  %}
+<script type="text/javascript">
+    $(document).ready(function() {
+        $('.tbl').DataTable( {
+        
+        dom: 'Bfrtip',
+        buttons: [
+            'excel',
+           {
+                    text: '+New',
+                    className: 'orange, btn btn-info',
+                     action: function (e, dt, node, config)
+                        {
+
+                          window.location="{% url 'new_madeni' %}"
+
+                        }
+                }
+        ]
+    } );
+    });
+</script>
+{% endblock %}
+

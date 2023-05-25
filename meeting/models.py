@@ -1,6 +1,7 @@
 from django.forms import forms
 from django.db import models
 from lead.models import Lead
+from user.models import User
 # Create your models here.
 class Meeting(models.Model):
     date=models.DateTimeField()
@@ -11,6 +12,7 @@ class Meeting(models.Model):
     #next_meeting_date=models.DateTimeField( null=True)
     #next_agenda=models.CharField(max_length=300,null=True)
     lead=models.ForeignKey(Lead,on_delete=models.CASCADE)
+    user=models.ForeignKey(User,on_delete=models.CASCADE,related_name='meeting_user')
 
 
 

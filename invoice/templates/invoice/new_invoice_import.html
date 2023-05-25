@@ -1,0 +1,184 @@
+{% extends 'master_template.html' %}
+{%  block body_block  %}
+{% load crispy_forms_tags %}
+<div class="col-lg-12">
+
+    <div class="card">
+        <div class="card-title">
+            <h4>{{header}}</h4>
+         <br/>
+            <br/>
+        </div>
+        <div class="row">
+            <div class="messages col-lg-12">
+                {% for msg in messages %}
+
+                <div class="alert alert-success" role="alert">
+                    {{msg.message}}
+                </div>
+
+                {% endfor %}
+            </div>
+            {% for error in forms.errors %}
+             {{error}}
+            {% endfor %}
+        </div>
+
+        <div class="card-body">
+            <div class="basic-form">
+                <form method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                      <!--invoice top info-->
+                         <div class="form-row col-md-6">
+                            <div class="col-md-12">
+                                {{form.company|as_crispy_field}}<br/>
+                            </div>
+                            <div class="col-md-12">
+                              {{form.pobox|as_crispy_field}}
+                            </div>
+                            <div class="col-md-12">
+                              {{form.city|as_crispy_field}}
+
+                            </div>
+                             <div class="col-md-12">
+                              {{form.antetion_person|as_crispy_field}}
+
+                            </div>
+                             <div class="col-md-12">
+                              {{form.stock_info|as_crispy_field}}
+
+                            </div>
+
+                        </div>
+                    <!--END DATE-->
+                     <div class="form-row col-md-6">
+                            <div class="col-md-12">
+                                {{form.currency|as_crispy_field}}<br/>
+                            </div>
+                            <div class="col-md-12">
+                              {{form.start_date|as_crispy_field}}
+                            </div>
+                            <div class="col-md-12">
+                              {{form.end_date|as_crispy_field}}
+
+                            </div>
+                            <div class="col-md-12">
+                              {{form.campaign|as_crispy_field}}
+
+                            </div>
+                           <div class="col-md-12">
+                              {{form.file|as_crispy_field}}
+
+                            </div>
+                            <div class="col-md-12">
+                              {{form.deposittype|as_crispy_field}}
+
+                            </div>
+                            <div class="col-md-12">
+                              {{form.tag|as_crispy_field}}
+
+                            </div>
+                            
+
+
+
+                        </div>
+                    <!--invoice top bottom -->
+
+
+
+
+
+
+
+                    <div class="form-group">
+                        <div class="col-sm-offset-1 col-sm-10">
+                            <button type="submit" class="btn col-md-3 btn-primary">Save</button>
+                            <a href="{% url 'contactlist' %}"><button type="button" class="btn col-md-3 btn-danger">Cancel</button></a>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /# column -->
+<div class="col-lg-4">
+
+</div>
+<!-- /# column -->
+</div>
+{% endblock %}
+{% block jss %}
+<script>
+$(document).ready(function(){
+    var i=1;
+    $("#add_row").click(function(){b=i-1;
+ var tr='<tr><td><input type="checkbox" name="ismain" class="case" /></td></td><td><input class="form-control" name="order" type="number" required="true" /></td><td><input type="text" name="desc" id="product"  required="true" placeholder="Enter product" class="form-control"/></td> <td><input type="number" name="qty" id="qty" required="true"  class="form-control qty" step="0" min="0"/></td><td><input type="number" name="price" id="price" required="true" placeholder="Unite price" class="form-control price" step="0.00" min="0"/></td> <td><input type="number" step="0.01" name="total[]"" id="total" placeholder="0.00" class="form-control total" readonly/></td></tr>';
+  $('#tab_logic').append(tr);
+    });
+     $("#add_row_main").click(function(){b=i-1;
+ var tr='<tr><td><input  name="ismain" type="checkbox" class="case"/></td></td><td><input type="text" name="desc" id="product"  required="true" placeholder="Enter product" class="form-control"/></td> <td><input type="number" name="qty" id="qty" required="false"  readonly="true" class="form-control qty" step="0" min="0"/></td><td><input type="number" name="price" id="price" readonly="true" placeholder="Unite price" class="form-control price" step="0.00" min="0"/></td> <td><input type="number" name="total[]"" id="total" placeholder="0.00" class="form-control total" readonly/></td></tr>';
+  $('#tab_logic').append(tr);
+    });
+
+
+ $("#delete_row").on('click', function() {
+  if ($('.case:checkbox:checked').length > 0){
+  $('.case:checkbox:checked').parents("tr").remove();
+    calc();
+  }
+  else confirm_check();
+
+});
+
+
+  $("tr td.td").on("click",".remove", function(){
+    alert('mii');
+  $(this).parent("tr:first").remove();
+});
+
+  $('#tab_logic tbody').on('keyup change',function(){
+    calc();
+  });
+  $('#tax').on('keyup change',function(){
+    calc_total();
+  });
+
+
+});
+
+function calc()
+{
+  $('#tab_logic tbody tr').each(function(i, element) {
+    var html = $(this).html();
+    if(html!='')
+    {
+      var qty = $(this).find('.qty').val();
+      var price = $(this).find('.price').val();
+      $(this).find('.total').val(qty*price);
+
+      calc_total();
+    }
+    });
+}
+
+function calc_total()
+{
+  total=0;
+  $('.total').each(function() {
+        total += parseInt($(this).val());
+    });
+  $('#sub_total').val(total.toFixed(2));
+  //tax_sum=(total/100)*$('#tax').val();
+  tax_sum=0;//(total/100)*$('#tax').val();
+  //$('#tax_amount').val(tax_sum.toFixed(2));
+  $('#total_amount').val((total-tax_sum).toFixed(2));
+}
+
+
+
+
+</script>
+
+{% endblock %}

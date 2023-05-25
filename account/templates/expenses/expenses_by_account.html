@@ -1,0 +1,84 @@
+{% extends 'master_template.html' %}
+{% load invoice_tags %}
+{% load humanize %}
+{%  block body_block  %}
+<div class="col-lg-8">
+    <div class="box-inner">
+        <div class="box-header well" data-original-title="">
+            <h2><i class="glyphicon glyphicon-th-list"></i> {{header|upper}}</h2>
+
+            <div class="box-icon">
+                <a href="#" class="btn btn-setting btn-round btn-default"><i class="glyphicon glyphicon-cog"></i></a>
+                <a href="#" class="btn btn-minimize btn-round btn-default"><i
+                        class="glyphicon glyphicon-chevron-up"></i></a>
+                <a href="#" class="btn btn-close btn-round btn-default"><i class="glyphicon glyphicon-remove"></i></a>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="col-md-12 alert alert-info">
+                    <p>TOTAL EXPENSES: <b>{{exsum|floatformat|intcomma:2}}</b></p>
+                </div>
+            </div>
+        </div>
+        <div class="box-content table-responsive">
+
+
+            <table class="table tbl" id="" width="100%">
+                <thead>
+                <tr>
+
+                    <th>SN</th>
+                     <th>Amount</th>
+                    <th>Account</th>
+
+
+
+
+                </tr>
+                </thead>
+                <tbody>
+                {% for list in lists %}
+                <tr>
+
+                    <td class="center">{{forloop.counter}}</td>
+                    <td class="" >{{list.AccSum|floatformat|intcomma:2}}</td>
+                    <td class="center"> <b>{{list.accountname}}</b></td>
+                    <td class="center"> <b>{{list.no}}</b></td>
+
+
+                </tr>
+                {% endfor %}
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</div>
+{% endblock %}
+{%  block jss  %}
+<script type="text/javascript">
+    $(document).ready(function() {
+        $('.tbl').DataTable( {
+        
+        dom: 'Bfrtip',
+        buttons: [
+            'excel',
+           {
+                    text: '+New',
+                    className: 'orange, btn btn-info',
+                     action: function (e, dt, node, config)
+                        {
+
+                          window.location="{% url 'new_expense' %}"
+
+                        }
+                }
+
+        ]
+    } );
+    });
+</script>
+{% endblock %}
+

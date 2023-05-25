@@ -1,0 +1,361 @@
+{% extends 'master_template.html' %}
+{%  block body_block  %}
+{% load crispy_forms_tags %}
+{% load invoice_tags %}
+{% load general_tags %}
+{% load humanize %}
+<style>
+    control[disabled], .form-control[readonly], fieldset[disabled] .form-control {
+    cursor: not-allowed;
+    background-color: #FFF;
+    opacity: 1;
+}
+</style>
+<div class="col-lg-12">
+
+    <div class="card">
+        <div class="card-title">
+            <div class="row">
+                <div class="col-md-8">
+                     <h4>{% if invoice.is_aninvoice %} INVOICE{%else %} PROFORMER {% endif %}:{{invoice.invoice_no}}/{{invoice.invoice_status}}  </h4>
+                </div>
+                <div class="col-md-4">
+                    <span class="label label-default" style="text-align:right;">{{invoice.invoice_status}}</span>
+                    <span>  {% if jobcard %}<a href="{% url 'jobcard_detail' job=jobcard.id pk=invoice.id %}"  class="badge badge-danger pull-right ">JOBCARD</a> {% else %} <a href="{% url 'jobcard_new' invoice.id %}"  class="badge badge-danger pull-right ">NEW JOBCARD</a>{% endif %}</span>
+                </div>
+            </div>
+
+         <br/>
+            <br/>
+        </div>
+        <div class="row">
+            <div class="col-md-12 pull-right">{% if 'PAID' not in  invoice.invoice_status %}{% if not  invoice.is_cancelled %} {% if not  invoice.is_aninvoice %}<a href="javascript:;" onclick="convert2invoice('{% url 'qoute2invoice' invoice.id  %}');" class="btn btn-primary pull-right ">MOVE2INVOICE</a> {% endif %} <a href="{% url 'invoice_update' invoice.id %}" class="btn btn-warning pull-right ">UPDATE</a> <a href="{% url 'invoice_update_import' invoice.id %}" class="btn btn-warning pull-right ">UPDATE(IMPORT)</a>{% if not  invoice.is_cancelled %} <a href="javascript:;" onclick="convert2cancelled('{% url 'inv2cancel' invoice.id  %}');" class="btn btn-danger pull-right ">MARK CANCELLED</a>{% endif %}{% endif %}{% if invoice.is_aninvoice and not invoice.is_cancelled %}<a href="javascript:;" onclick="convert2paid('{% url 'inv2paid' invoice.id  %}');" class="btn btn-primary pull-right ">MOVE2PAID</a> {% endif %} {% endif %} <a href="{% url 'invoicepdf' invoice.id  %}"  class="btn btn-primary pull-right ">PDF</a><a href="{% url 'deliverypdf' invoice.id  %}"  class="btn btn-primary pull-right ">DELIVERY</a>
+            
+            {% if not  invoice.is_cancelled  and not  invoice.is_aninvoice %}<!--<a href="javascript:;" onclick="confirm_modal('{% url 'qoute2delete' invoice.id  %}');" class="btn btn-danger pull-right ">TRASH IT</a>-->{% endif %}
+            
+            <a href="javascript:;" onclick="convert2duplicate('{% url 'invoice_duplicate' invoice.id  %}');" class="btn btn-warning pull-right ">DUPLICATE</a>
+            {% if  'PAID' in invoice.invoice_status %}<a href="javascript:;" onclick="move2unpaid('{% url 'inv2unpaid' invoice.id  %}');" class="btn btn-danger pull-right ">MARK UNPAID</a>{% endif %}
+             {% if  invoice.is_aninvoice %}<a href="javascript:;" onclick="move2qoute('{% url 'move2qoute' invoice.id  %}');" class="btn btn-danger pull-right ">BACK 2 QOUTE</a>{% endif %}
+
+            
+            
+
+            </div>
+            
+        </div>
+        </div>
+        
+
+
+        <div class="card-body">
+            <div class="basic-form">
+                <div method="post">
+                    {% csrf_token %}
+                            <!--ABOVE INFO ---->
+           <!--invoice top info-->
+
+
+                     <table class="table table-bordered table-hover">
+                        <thead>
+                        <tr>
+                            <th colspan="2">CLIENT DETAILS</th>
+                            <th colspan="2">PROJECT DETAILS</th>
+
+                        </tr>
+                        <tr>
+                            <th>CLIENT</th>
+                            <th>{{invoice.company|upper}}</th>
+                            <th>START DATE</th>
+                            <th>{{invoice.start_date|date:'d.m.Y'}}</th>
+
+                        </tr>
+                        <tr>
+                            <th>ADDRESS</th>
+                            <th>{{invoice.pobox|upper}}</th>
+                            <th>EXPIRING DATE</th>
+                            <th>{{invoice.end_date|date:'d.m.Y'}}</th>
+
+                        </tr>
+                        <tr>
+                            <th>CITY</th>
+                            <th>{{invoice.city|upper}}</th>
+                            <th>POST TYPE(bank/mpesa)</th>
+                            <th>{{invoice.deposittype|upper}}</th>
+
+                        </tr>
+                        <tr>
+                            <th>ATTENTION PERSON</th>
+                            <th>{{invoice.antetion_person|upper}}</th>
+                            <th>TAG</th>
+                            <th>{{invoice.tag|upper}}</th>
+
+                        </tr>
+                        <tr>
+                            <th colspan="4" style="color:#20c997;"><p>{% if invoice.comment %} {{invoice.comment}} {% endif %}</p></th>
+                           
+                        </tr>
+
+
+                        </thead>
+
+                    </table>
+                    <!--invoice top bottom -->
+               <!--ABOVE INFO-->
+
+                 <div class="row">
+                  <div class="row col-md-12 table-responsive">
+
+                <div class="col-md-12">
+                  <table class="table table-bordered table-hover" id="tab_logic">
+                    <thead>
+                      <tr>
+                        <th width="5%" style="text-align:left;"> SN </th>
+                        <th class="text-center" style="text-align:left;" width="35%"> Product/Service </th>
+                        <th class="text-center" width="15%"> Qty </th>
+                        <th class="text-center" width="15%" style="text-align:right;"> Price </th>
+                        <th class="text-center" width="15%" style="text-align:right;"> Total ({{invoice.currency}})</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                        {% set 0 as counter %}
+                      {% for line in invoicelines %}
+                      {% if line.qty == 0 and line.price == 0 %}
+                      <tr id='addr0'>
+                          <td></td>
+                        <td>{{line.desc|upper}}</td>
+                        <td style="text-align:center;"></td>
+                        <td style="text-align:right;"></td>
+                        <td style="text-align:right;"> </td>
+
+                      </tr>
+                      {% else %}
+                      {% int_add 1 counter as counter %}
+                      
+                      <tr id='addr0'>
+                          <td>{{counter}}</td>
+                        <td>{{line.desc}}</td>
+                        <td style="text-align:center;">{{line.qty}}</td>
+                        <td style="text-align:right;">{{line.price|floatformat:2|intcomma}}</td>
+                        <td style="text-align:right;">{% product line.qty line.price as linesum %}{{linesum|floatformat:2|intcomma}} </td>
+
+                      </tr>
+                      {% endif %}
+                    {% endfor %}
+                    
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+
+              <div class="row col-md-12">
+                <div class="col-md-6"></div>
+                <div class="col-md-6 float-right">
+                  <table class="table table-bordered table-hover float-right" width="30%" id="tab_logic_total">
+                    <tbody>
+                      <tr>
+                        <th class="text-center">Sub Total</th>
+                        <td class="text-right" style="text-align:right;">{% invoice_amount invoice.id as amount %}{{amount|floatformat:2|intcomma}}</td>
+                      </tr>
+                      {% if invoice.show_tax %}
+                      <tr>
+                        <th class="text-center">VAT</th>
+                        <td class="text-right" style="text-align:right;">{% invoice_vat invoice.id as amount %}{{amount|floatformat:2|intcomma}}</td>
+                      </tr>
+
+                      <tr>
+                        <th class="text-center">Grand Total</th>
+                        <td class="text-center" style="text-align:right;">{% invoice_amount_total invoice.id as amount %}{{amount|floatformat:2|intcomma}}</td>
+                      </tr>
+                      {% else %}
+                      <tr>
+                        <th class="text-center">Grand Total</th>
+                        <td class="text-center" style="text-align:right;">{{amount|floatformat:2|intcomma}}</td>
+                      </tr>
+                      {% endif %}
+                    </tbody>
+                  </table>
+                </div>
+
+            </div>
+
+                </div>
+
+
+
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /# column -->
+<!---CONTACT-->
+        <div class="col-lg-12">
+        <div class="box-inner">
+            <div class="box-header well" data-original-title="">
+                <h2><i class="glyphicon glyphicon-th-list"></i> CHAMPIONING</h2>
+
+
+                <div class="box-icon">
+                    <a href="#" class="btn btn-setting btn-round btn-default"><i class="glyphicon glyphicon-cog"></i></a>
+                    <a href="#" class="btn btn-minimize btn-round btn-default"><i
+                            class="glyphicon glyphicon-chevron-up"></i></a>
+                    <a href="#" class="btn btn-close btn-round btn-default"><i class="glyphicon glyphicon-remove"></i></a>
+                </div>
+            </div>
+            <div class="box-content">
+                <div class="row">
+                    <div class="col-md-6">
+                        <p><span class="btn btn-secondary"><a href="javascript:;" onclick="showAjaxModal('{% url 'exp_distribute_add' invoice.id %}');"> <i class="glyphicon glyphicon-edit"></i>ADD</a> </span> </p>
+                        <p><label>Champion</label>  <b>{{invoice.champion.first_name|upper}} {{invoice.champion.last_name|upper}}</b></p>
+
+                        <p><label>EXPECTED DISTRIBUTION</label></p>
+                        <table class="table">
+                            <thead>
+                            <tr>
+                                <th>Sn</th>
+                                <th>Desc</th>
+                                <th>Amount</th>
+                                <th></th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for ex in expected %}
+                            <tr>
+                                <td>{{forloop.counter}}</td>
+                                <td>{{ex.desc}}</td>
+                                <td>{{ex.expected_amount|floatformat:2|intcomma}}</td>
+                                <td><a href="javascript:;" onclick="confirm_modal('{% url 'exp_distribute_delete' pk=ex.id %}');"><i class="glyphicon glyphicon-trash"></i> </a></td>
+                            </tr>
+                            {% endfor %}
+                            <tr>
+                                <td></td>
+                                <td>TOTAL</td>
+                                <td>{{expectedsum|floatformat:2|intcomma}}</td>
+                                <td></td>
+                            </tr>
+                            </tbody>
+                        </table>
+
+                </div>
+                    <div class="col-md-6">
+                        <label>ACTUAL  COSTS</label>
+                        <table class="table">
+                            <thead>
+                            <tr>
+                                <th>SN</th>
+                                <th>DESC</th>
+                                <th>AMOUNT</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for ex in expense %}
+                            <tr>
+                                <td>{{forloop.counter}}</td>
+                                <td>{{ex.desc}}</td>
+                                <td>{{ex.dr|floatformat:2|intcomma}}</td>
+                            </tr>
+                            {% endfor %}
+                            <tr>
+                                <td></td>
+                                <td>TOTAL EXPENSES</td>
+                                <td>{{exsum|floatformat:2|intcomma}}</td>
+                            </tr>
+                            <tr>
+                                <td bgcolor="#c9c9c9"></td>
+                                <td bgcolor="#c9c9c9">PROJECT PROFIT</td>
+                                <td bgcolor="#c9c9c9">{{invsum|floatformat:2|intcomma:2}}</td>
+                            </tr>
+                            </tbody>
+                        </table>
+
+                    </div>
+                </div>
+
+
+            </div>
+
+        </div>
+    </div>
+    <!--end contact-->
+<!-- /# column -->
+</div>
+{% endblock %}
+{% block jss %}
+<script>
+    $('#tab_logic').DataTable( {
+        dom: 'Bfrtip',
+        ordering:false,
+        paging:false,
+    buttons: [
+        'excel'
+    ]
+} );
+</script>
+<script>
+$(document).ready(function(){
+    var i=1;
+    $("#add_row").click(function(){b=i-1;
+ var tr='<tr><td><input type="checkbox" class="case"/></td></td><td><input type="text" name="desc[]" id="product"  required="true" placeholder="Enter product" class="form-control"/></td> <td><input type="number" name="qty[]" id="qty" required="true"  class="form-control qty" step="0" min="0"/></td><td><input type="number" name="price[]" id="price" required="true" placeholder="Unite price" class="form-control price" step="0.00" min="0"/></td> <td><input type="number" name="total[]"" id="total" placeholder="0.00" class="form-control total" readonly/></td></tr>';
+  $('#tab_logic').append(tr);
+    });
+
+
+ $("#delete_row").on('click', function() {
+  if ($('.case:checkbox:checked').length > 0){
+  $('.case:checkbox:checked').parents("tr").remove();
+    calc();
+  }
+  else confirm_check();
+
+});
+
+
+  $("tr td.td").on("click",".remove", function(){
+    alert('mii');
+  $(this).parent("tr:first").remove();
+});
+
+  $('#tab_logic tbody').on('keyup change',function(){
+    calc();
+  });
+  $('#tax').on('keyup change',function(){
+    calc_total();
+  });
+
+
+});
+
+function calc()
+{
+  $('#tab_logic tbody tr').each(function(i, element) {
+    var html = $(this).html();
+    if(html!='')
+    {
+      var qty = $(this).find('.qty').val();
+      var price = $(this).find('.price').val();
+      $(this).find('.total').val(qty*price);
+
+      calc_total();
+    }
+    });
+}
+
+function calc_total()
+{
+  total=0;
+  $('.total').each(function() {
+        total += parseInt($(this).val());
+    });
+  $('#sub_total').val(total.toFixed(2));
+  //tax_sum=(total/100)*$('#tax').val();
+  tax_sum=0;//(total/100)*$('#tax').val();
+  //$('#tax_amount').val(tax_sum.toFixed(2));
+  $('#total_amount').val((total-tax_sum).toFixed(2));
+}
+
+
+
+
+</script>
+
+{% endblock %}

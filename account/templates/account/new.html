@@ -1,0 +1,83 @@
+{% extends 'master_template.html' %}
+{%  block body_block  %}
+{% load crispy_forms_tags %}
+<div class="col-lg-8">
+
+    <div class="card">
+        <div class="card-title">
+            <h4>{{header}}<br/></h4>
+
+        </div>
+        <div class="row">
+            <div class="messages col-lg-8">
+                {% for msg in messages %}
+
+                <div class="alert alert-success" role="alert">
+                    {{msg.message}}
+                </div>
+
+                {% endfor %}
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="basic-form">
+                <form method="post">
+                    {% csrf_token %}
+
+
+
+
+                        <div class="form-row">
+                            <div class="col-md-6">
+                                {{form.name|as_crispy_field}}
+                                <br/>
+                            </div>
+                             <div class="col-md-6">
+                                {{form.accountno|as_crispy_field}}
+                                <br/>
+                            </div>
+                            <div class="col-md-6">
+                                {{form.chart|as_crispy_field}}
+                                <br/>
+                            </div>
+                            <div class="col-md-6">
+                                {{form.accountcategory|as_crispy_field}}
+                                <br/>
+                            </div>
+                            <div class="col-md-6">
+                                {{form.is_cashaccount|as_crispy_field}}
+                                <br/>
+                            </div>
+                            <div class="col-md-6">
+                                {{form.is_bankaccount|as_crispy_field}}
+                                <br/>
+                            </div>
+
+
+                        </div>
+
+
+
+                    </div>
+                    <br>
+
+
+                    <div class="form-group">
+                        <div class="col-sm-offset-1 col-sm-10">
+                            <button type="submit" class="btn col-md-3 btn-primary">Save</button>
+                            <a href="{% url 'charts' %}"><button type="button" class="btn col-md-3 btn-danger">Cancel</button></a>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /# column -->
+<div class="col-lg-4">
+
+</div>
+<!-- /# column -->
+</div>
+{% endblock %}
+

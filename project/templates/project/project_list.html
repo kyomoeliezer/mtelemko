@@ -1,0 +1,96 @@
+
+{% extends 'master_template.html' %}
+{%  block body_block  %}
+{% load humanize %}
+<div class="col-lg-12">
+    <div class="box-inner">
+        <div class="box-header well" data-original-title="">
+            <h2><i class="glyphicon glyphicon-th-list"></i> {{header|upper}}</h2>
+
+            <div class="box-icon">
+                <a href="#" class="btn btn-setting btn-round btn-default"><i class="glyphicon glyphicon-cog"></i></a>
+                <a href="#" class="btn btn-minimize btn-round btn-default"><i
+                        class="glyphicon glyphicon-chevron-up"></i></a>
+                <a href="#" class="btn btn-close btn-round btn-default"><i class="glyphicon glyphicon-remove"></i></a>
+            </div>
+        </div>
+        <div class="box-content table-responsive">
+
+
+            <table class="table tbl" id="table">
+                <thead>
+                <tr>
+
+                    <th>Name</th>
+                    <th>Company</th>
+                    <th>Amount</th>
+                    <th>Status</th>
+                     <th>Start</th>
+                    <th>End</th>
+
+                    <th>Action</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for list in projects %}
+                <tr>
+
+                     <td class="center"><a href="{% url 'projectdetail' list.id %}"> {{list.title|title}}</a></td>
+                    <td class="center">{{list.company|upper}}</td>
+
+                    <td class="center">{{list.amount|floatformat:2|intcomma}}</td>
+                    <td class="center">{% if 'Onprogress' in list.status %} <label class="label label-info">{{list.status|upper}}</label> {% elif 'Completed' in list.status %} <label class="label label-success">{{list.status|upper}}</label> {% elif 'Pending' in list.status %} <label class="label label-danger">{{list.status|upper}}</label> {% endif %}</td>
+                    <td class="center">{{list.start_date|date:'d.m.y'}}</td>
+                    <td class="center">{{list.end_date|date:'d.m.y'}}</td>
+                    <td class="center"><a href="{% url 'updateproject' list.id  %}"> <i class="glyphicon glyphicon-pencil"></i></a> </td>
+
+
+
+
+
+                </tr>
+                {% endfor %}
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</div>
+{% endblock %}
+{%  block jss  %}
+<script type="text/javascript">
+    $(document).ready(function() {
+        $('.tbl').DataTable( {
+        destroy: true,
+        dom: 'Bfrtip',
+        ordering:false,
+        buttons: [
+           {
+                    text: '+New',
+                    className: 'orange, btn btn-info',
+                     action: function (e, dt, node, config)
+                        {
+
+                          window.location="{% url 'newproject' %}"
+
+                        }
+                },
+
+                {
+                    text: 'Completed',
+                    className: 'orange, btn btn-success',
+                     action: function (e, dt, node, config)
+                        {
+
+                          window.location="{% url 'completedlist' %}"
+
+                        }
+                }
+
+        ]
+    } );
+    });
+</script>
+{% endblock %}
+

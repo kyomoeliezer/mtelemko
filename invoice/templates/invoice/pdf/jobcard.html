@@ -1,0 +1,292 @@
+
+<!doctype html>
+<html>
+<head>
+
+    <meta charset="utf-8">
+    <title>JOBCARD</title>
+    {% load staticfiles %}
+    {% load invoice_tags %}
+    {% load general_tags %}
+    {% load humanize %}
+
+    <style type="text/css">
+        @page {
+            size: A4;
+            size: letter;
+            margin-top: 2cm;
+             margin-left: 2cm;
+               margin-right: 2cm;
+               margin-bottom: 5cm;
+
+
+            /* *****************/
+                    /* Header frame starts within margin-top of @page */
+              @frame header {
+              -pdf-frame-content: headerContent; /* headerContent is the #id of the element */
+              top: 0.5cm;
+              margin-left: 2cm;
+              margin-right:2cm;
+              height:1cm;
+              }
+
+            /* Footer frame starts outside margin-bottom of @page */
+              @frame footer {
+                -pdf-frame-content: footerContent;
+                bottom: 1cm;
+                margin-left: 1cm;
+                margin-right: 1cm;
+                height: 4cm;
+              }
+            /****************/
+        }
+       .header th {
+            vertical-align: top;
+            horizontal-align:left;
+            border-top: none;
+             border-left:none;
+            border-right: none;
+
+        }
+         .header {
+            width: 100%;
+            max-width: 100%;
+            margin-bottom: 20px;
+            background-color: #fff;
+        }
+        .table {
+            width: 100%;
+            max-width: 100%;
+            margin-bottom: 5px;
+        }
+        .table th,
+        .table td {
+            padding: 5px;
+            vertical-align: top;
+            border-top: 1px solid #000;
+             border-left: 1px solid #000;
+            border-right: 1px solid #000;
+            border-bottom: 1px solid #000;
+            text-align: center;
+        }
+
+        .tblpayments th,
+        .tblpayments td {
+            color:#2bb3ac;
+            padding:1px;
+            vertical-align:top;
+            border:none;
+            text-align: left;
+        }
+        .table thead th {
+            vertical-align: bottom;
+            border-bottom: 2px solid #000;
+
+        }
+        .table tbody + tbody {
+            border-top: 2px solid #000;
+        }
+        /*.table .table {
+            background-color: #fff;
+        }*/
+        td.line {
+             border-left: 1px solid #2bb3ac;
+
+        }
+        .list-group {
+            display: block;
+            width: 100%;
+            list-style: none;
+            margin-top: 15px;
+            margin-bottom: 15px;
+        }
+        .list-group p {
+            width: 100%;
+            height: 20px;
+            line-height: 20px;
+            list-style: none;
+            font-size: 1.1em;
+        }
+        .line{
+        color:blue;
+        }
+
+        .header.left {
+            text-align:left;
+           }
+       .header .right {
+        text-align:right;
+        }
+        .font15 {font-size:15px;}
+        .font14 {font-size:14px;}
+        td.left{text-align:left;}
+        th.left{text-align:left;}
+        .payment_detail{
+            background-color:#2bb3ac;
+        }
+        td.leftp {
+            bgcolor:#2bb3ac;
+            text-align:left;
+        }
+
+
+
+
+    </style>
+</head>
+<div id="footerContent" style="color:#2bb3ac;width: 100%;" >
+            <table class="table" style="border: none;">
+
+              <tr style="color:#2bb3ac; ">
+
+                <td  style="border: none;color:#2bb3ac;"><img src="http://m-sales.mifumotz.com/static/img/icons/CISCO.png">&nbsp;&nbsp;<img src="http://m-sales.mifumotz.com/static/img/icons/YEASTAR.png"><br/>
+               <b style="font-size:12px;">ICT Supply, Services and Supports</b></td>
+                <td style="border: none;"><img src="http://m-sales.mifumotz.com/static/img/icons/XORCOM.png">&nbsp;&nbsp;<img src="http://m-sales.mifumotz.com/static/img/icons/PYTHON.png"><br/>
+                <b style="font-size:12px;">A new way of doing things</b></td>
+                <td style="border: none;text-align: right;"><img src="http://m-sales.mifumotz.com/static/img/icons/canone-img.jpg">&nbsp;&nbsp;<img src="http://m-sales.mifumotz.com/static/img/icons/ip_phones.png"><br/>
+                <span style="text-align: left;"><b style="font-size:12px;">+255 752 350620<br/>sales@mifumotz.com</b></span></td>
+                       </tr>
+
+            </table>
+            <P style="color:black;"><span></span></P>
+
+
+           </div>
+           <div id="headerContent" style="color:#2bb3ac;width: 65%;text-align:center;font-size:2px;" >
+
+            <table class="table view-results  table-hover test table-bordered" >
+                <thead>
+                  <tr  class="">
+                    <td colspan="2" width="60%" align="left" style="border: none;line-height: 1px;"><hr> </td>
+                  </tr>
+                </thead>
+            </table>
+           </div>
+<body>
+
+
+
+    <div class="card">
+       <table class="table view-results  table-hover test table-bordered" >
+                <thead>
+                  <tr  class="">
+                      <th  colspan="2"   align="left" style="width:60%; border:none;;font-family:verdana;"><img src="http://m-sales.mifumotz.com/static/img/logo.jpg" >
+                    </th>
+                    <th style="border:none;width:10%;"></th>
+                    
+                    <th  colspan="2"  style="background-color:#2bb3ac;border: none;;width:15%;text-align:center;">
+                        <span style="font-family: Arial, Helvetica, sans-serif;font-size:20px;padding-right:10px; color:#fff">JOBCARD<br/><span style="font-size:18px;color:#000;">MF-09</span>
+                        </th>
+                    
+                  </tr>
+                  <tr  class="">
+                      <th    align="left" colspan="2" style="width:60%;border: none;font-family:verdana;">
+                          <span style="font-size:16px;">MIFUMOTZ COMPANY LIMITED</span><br/>
+                    Makulumula st, Magomeni, Kinondoni, ZIP 14102<br/> Box 80724,  Dar es Salaam.<br/>+255752350620 , sales@mifumotz.com
+                    </th>
+                    <th style="border:none;width:10%;"></th>
+                    
+                    <th style="border:none;width:15%;"><br/>DATE</th>
+                    <th style="border:none; width:15%;"><br/>12.08.2021</th>
+                    
+                  </tr>
+                  
+                   
+                </thead>
+           
+       </table>
+       <table class="table" style="border: 1px solid #2bb3ac;">
+           <thead>
+               <tr>
+                   <th style="width:11%;border: 1px solid #2bb3ac;background-color:#000;color:#FFF;">PROJECT:</th>
+                   <th style="width:49%;border: 1px solid #2bb3ac; text-align:left;">PRINTER SERVICES</th>
+                   <th style="text-align:left;width:10%;border: 1px solid #2bb3ac;background-color:#000;color:#FFF;">CLIENT</th>
+                   <th style="text-align:left;width:30%;border: 1px solid #2bb3ac;">BUNGE TANZANIA LIMITED</th>
+               </tr>
+               <tr>
+                   <th style="width:11%;border: 1px solid #2bb3ac;background-color:#000;color:#FFF;">DEVICE(S)</th>
+                     <th style="width:49%;border: 1px solid #2bb3ac; text-align:left;"> </th>
+                   <th style="text-align:left;width:10%;border: 1px solid #2bb3ac;background-color:#000;color:#FFF;">ADDRESS</th>
+                   <th style="text-align:left;width:30%;border: 1px solid #2bb3ac;">BOX 365282,</th>
+               </tr>
+               <tr>
+                   <th style="width:11%;border: 1px solid #2bb3ac; background-color:#000;color:#FFF;">TECH/ENG</th>
+                     <th style="width:49%;border: 1px solid #2bb3ac; text-align:left;"> </th>
+                   <th style="text-align:left;width:10%;border: 1px solid #2bb3ac;background-color:#000;color:#FFF;">CITY</th>
+                   <th style="text-align:left;width:30%;border: 1px solid #2bb3ac;">DODOMA-TANZANIA,</th>
+               </tr>
+           </thead>
+       </table>
+<table class="table view-results  table-hover test table-bordered" >
+                
+                   <tr  class="">
+                    <td  bgcolor="#2bb3ac" width="30%" align="left" style="border: none; color: #FFF;font-size: 13px;"><b>DEVICE</b></td>
+                    <td width="50%"  bgcolor="#2bb3ac" align="left" style="border: none; color: #FFF;font-size: 13px;text-align:left;padding-left:5px;"><b>ACTIVITY(IES) </b></td>
+
+                    <td bgcolor="#2bb3ac" width="20%" style="border: none;line-height: 4px;color:#FFF;font-size: 13px;text-align: right;" colspan="1"><b>STATUS</b></td>
+                  </tr>
+                  {% set 0 as counter %}
+                  {% for line in invoicelines %}
+
+                  {% if line.qty != 0 and line.price != 0  %}
+                    <tr>
+                    <td width="5%" style="border: 1px solid #2bb3ac;line-height: 4px;text-align: center;" class="line_left">{{forloop.counter}} </td>
+                    <td colspan="3"   style="border: 1px solid #2bb3ac;line-height: 4px;text-align: left;" class="line_left"><b>{{line.desc|upper}}</b></td>
+
+                    <td width="22%" style="border: 1px solid #2bb3ac;line-height: 4px;text-align: right;color: #000;" class="line_right"><b>{{line.qty|floatformat:1}}</b></td>
+                  </tr>
+
+
+                 {% endif %}
+
+                 {% endfor %}
+
+
+
+
+
+
+        </table>
+        <br/>
+        <br/>
+        <table class=""  style="color:#2bb3ac; width:100%;font-style:bold;">
+            <tr>
+                <td style="width:70%"><b>TECHNICIAN/ENGINEER</b> <br/></td>
+
+                <td style="width:30%"><b>ON BEHALF OF CLIENT<br/>Please confirm that you received the mentioned service(s) as per list.</b></td>
+            </tr>
+            <tr>
+                <td style="width:70%"><b>SIGNATURE .............................</b><br/></td>
+                <td style="width:30%"><b>NAME .............................</b><br/></td>
+
+            </tr>
+             <tr>
+                <td style="width:70%"><b>DATE 12.12.2021</b><br/></td>
+                <td style="width:30%"><b>SIGN .............................</b><br/></td>
+
+            </tr>
+            <tr>
+                <td style="width:70%"><br/></td>
+                <td style="width:30%"><b>DATE .............................</b><br/></td>
+
+            </tr>
+             <tr>
+                <td style="width:70%"><br/></td>
+                <td style="width:30%"><br/><br/><b>OFFICE  STAMP & DATE</b><br/></td>
+
+            </tr>
+        </table>
+
+         <table class="tblpayments" style="color:#2bb3ac !important;font-size:7px;">
+
+
+            </table>
+
+
+
+    </div>
+</div>
+
+</body>
+</html>
+

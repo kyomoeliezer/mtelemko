@@ -1,0 +1,99 @@
+{% extends 'master_template.html' %}
+{% load invoice_tags %}
+{% load humanize %}
+{%  block body_block  %}
+<div class="col-lg-12">
+    <div class="box-inner">
+        <div class="box-header well" data-original-title="">
+            <h2><i class="glyphicon glyphicon-th-list"></i> {{header|upper}}</h2>
+
+            <div class="box-icon">
+                <a href="#" class="btn btn-setting btn-round btn-default"><i class="glyphicon glyphicon-cog"></i></a>
+                <a href="#" class="btn btn-minimize btn-round btn-default"><i
+                        class="glyphicon glyphicon-chevron-up"></i></a>
+                <a href="#" class="btn btn-close btn-round btn-default"><i class="glyphicon glyphicon-remove"></i></a>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="col-md-12 alert alert-info">
+                    <p>TOTAL EXPENSES: <b>{{exsum|floatformat|intcomma:2}}</b></p>
+                </div>
+            </div>
+        </div>
+        <div class="box-content table-responsive">
+
+
+            <table class="table tbl" id="" width="100%">
+                <thead>
+                <tr>
+
+                    <th>SN</th>
+                     <th>Amount</th>
+                    <th>Account</th>
+                    <th>Date</th>
+
+                    <th>Staff</th>
+                    <th></th>
+
+
+                </tr>
+                </thead>
+                <tbody>
+                {% for list in lists %}
+                <tr>
+
+                    <td class="center">{{forloop.counter}}</td>
+                    <td class="" >{{list.dr|floatformat|intcomma:2}}</td>
+                     <td class="center">{{list.date|date}}</td>
+                    <td class="center"> <b>{{list.account}}</b><br>{{list.desc}}</td>
+                    <td class="center"> {{list.champion.first_name}}</td>
+                    <td><a href="javascript:;" onclick="confirm_modal('{% url 'delete_payment' pk=list.payment_id %} ');"><i class="glyphicon glyphicon-trash"></i> </a></td>
+
+
+
+                </tr>
+                {% endfor %}
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</div>
+{% endblock %}
+{%  block jss  %}
+<script type="text/javascript">
+    $(document).ready(function() {
+        $('.tbl').DataTable( {
+        
+        dom: 'Bfrtip',
+        buttons: [
+            'excel',
+           {
+                    text: '+New',
+                    className: 'orange, btn btn-info',
+                     action: function (e, dt, node, config)
+                        {
+
+                          window.location="{% url 'new_expense' %}"
+
+                        }
+                },    {
+                    text: 'EXPENSES BY CATEGORY',
+                    className: 'orange, btn btn-info',
+                     action: function (e, dt, node, config)
+                        {
+
+                          window.location="{% url 'expense_by_acc_category' %}?year=2023"
+
+                        }
+                }
+
+
+        ]
+    } );
+    });
+</script>
+{% endblock %}
+
